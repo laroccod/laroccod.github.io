@@ -5,6 +5,8 @@ All notable changes to the portfolio site. Format follows
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-07-23
+
 ### Fixed
 
 - Mobile navbar overflow: on narrow viewports the horizontal link row plus

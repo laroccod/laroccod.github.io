@@ -53,7 +53,7 @@ def project_card(page: ft.Page, project: Project) -> ft.Container:
         [
             ft.Text(project.name, size=22, weight=ft.FontWeight.BOLD,
                     color=theme.ON_SURFACE),
-            ft.Text(project.role, size=12, color=theme.PINK,
+            ft.Text(project.role, size=12, color=theme.SECONDARY,
                     weight=ft.FontWeight.W_600),
         ],
         spacing=14,

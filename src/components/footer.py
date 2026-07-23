@@ -10,7 +10,7 @@ def footer() -> ft.Container:
             [
                 ft.Text(
                     f"© 2026 {content.NAME} · Built with Flet + labforge's "
-                    "instrument theme",
+                    "paper theme",
                     size=12,
                     color=theme.ON_SURFACE_VARIANT,
                     text_align=ft.TextAlign.CENTER,

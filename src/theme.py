@@ -1,26 +1,29 @@
-"""Site theme: labforge's "instrument" palette (near-black teal surfaces,
-one electric accent) — the site runs the same design system as the framework
-it showcases."""
+"""Site theme: labforge's "paper" palette (warm paper surfaces, graphite ink
+and a vermilion accent) — the site runs the same design system as the
+framework it showcases."""
 
 import flet as ft
 
-# Palette values copied from labforge src/labforge/theme.py ("instrument").
-ACCENT = "#2BE4C8"
-ON_ACCENT = "#04211C"
-ACCENT_DIM = "#123B33"
-ON_ACCENT_DIM = "#7FEFD9"
-SURFACE = "#0B0F10"
-SURFACE_LOWEST = "#080C0D"
-SURFACE_LOW = "#11181A"
-SURFACE_CONTAINER = "#141C1E"
-SURFACE_HIGH = "#182123"
-SURFACE_HIGHEST = "#1C2628"
-ON_SURFACE = "#E4EBEA"
-ON_SURFACE_VARIANT = "#8CA0A0"
-OUTLINE = "#3C4C4E"
-OUTLINE_VARIANT = "#233032"
-HIGHLIGHT = "#7FEFD9"
-PINK = "#FF4D9E"
+# Palette values copied from labforge src/labforge/theme.py ("paper").
+ACCENT = "#C14B2E"
+ON_ACCENT = "#FFF6F1"
+ACCENT_DIM = "#F2D9CE"
+ON_ACCENT_DIM = "#8A2F1B"
+SURFACE = "#FAF6EF"
+SURFACE_LOWEST = "#F1EAD9"
+SURFACE_LOW = "#FFFFFF"
+SURFACE_CONTAINER = "#FFFDF8"
+SURFACE_HIGH = "#FFFFFF"
+SURFACE_HIGHEST = "#FFFFFF"
+ON_SURFACE = "#33302A"
+ON_SURFACE_VARIANT = "#7A7264"
+OUTLINE = "#C9BFA9"
+OUTLINE_VARIANT = "#E5DECC"
+# Text-safe accent variant (paper's amber highlight #E0A458 is too low-contrast
+# for text on light surfaces, so highlight text uses the dark rust instead).
+HIGHLIGHT = "#8A2F1B"
+# Secondary accent: paper's "model" color (steel blue).
+SECONDARY = "#2E6F8E"
 
 # Spacing scale
 GUTTER = 24
@@ -35,7 +38,7 @@ def build_theme() -> ft.Theme:
             on_primary=ON_ACCENT,
             primary_container=ACCENT_DIM,
             on_primary_container=ON_ACCENT_DIM,
-            secondary=PINK,
+            secondary=SECONDARY,
             surface=SURFACE,
             on_surface=ON_SURFACE,
             on_surface_variant=ON_SURFACE_VARIANT,

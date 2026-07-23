@@ -75,8 +75,8 @@ def build(page: ft.Page) -> ft.View:
             [
                 ft.Row(
                     [
-                        ft.Icon(ft.Icons.SCHOOL, color=theme.PINK, size=20),
-                        ft.Text("Ph.D. Thesis", size=12, color=theme.PINK,
+                        ft.Icon(ft.Icons.SCHOOL, color=theme.SECONDARY, size=20),
+                        ft.Text("Ph.D. Thesis", size=12, color=theme.SECONDARY,
                                 weight=ft.FontWeight.W_600),
                     ],
                     spacing=8,

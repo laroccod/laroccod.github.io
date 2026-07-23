@@ -5,6 +5,18 @@ All notable changes to the portfolio site. Format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-22
+
+### Changed
+
+- Switched the site color scheme from labforge's dark "instrument" theme to
+  its light "paper" theme (warm paper surfaces, graphite ink, vermilion
+  accent; steel-blue secondary, dark-rust highlight for text contrast).
+
+### Added
+
+- LinkedIn and ORCID links on the contact page.
+
 ## [0.1.0] - 2026-07-22
 
 ### Added

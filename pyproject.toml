@@ -1,0 +1,19 @@
+[project]
+name = "portfolio"
+version = "0.1.0"
+description = "Personal portfolio site for Daniel La Rocco - built with Flet, deployed to GitHub Pages"
+requires-python = ">=3.12"
+dependencies = [
+    # Site must stay pure-Python + flet only: it runs under Pyodide in the
+    # static web build, so no numpy/matplotlib/etc.
+    "flet==0.86.0",
+]
+
+[tool.flet]
+org = "dev.larocco"
+product = "Daniel La Rocco"
+company = "Daniel La Rocco"
+copyright = "Copyright (c) 2026 Daniel La Rocco"
+
+[tool.flet.app]
+path = "src"

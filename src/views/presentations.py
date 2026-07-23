@@ -29,10 +29,18 @@ def _talk(p: content.Presentation) -> ft.Container:
         ft.Text(f"{p.event} · {p.where}", size=13,
                 color=theme.ON_SURFACE_VARIANT),
     ]
+    links: list[ft.Control] = []
     if p.url:
-        rows.append(
+        links.append(
             ft.TextButton(content=ft.Text("Event page ↗", size=13), url=p.url)
         )
+    if p.slides:
+        links.append(
+            ft.TextButton(content=ft.Text("Slides (PDF) ↗", size=13),
+                          url=p.slides)
+        )
+    if links:
+        rows.append(ft.Row(links, spacing=4, wrap=True))
     return panel(ft.Column(rows, spacing=6), padding=16)
 
 
@@ -41,8 +49,8 @@ def build(page: ft.Page) -> ft.View:
         [
             section_title("Conference Talks & Seminars", kicker="Presentations"),
             ft.Text(
-                "Six international conference presentations and invited "
-                "seminars, 2024–2026.",
+                "International conference presentations, invited seminars, "
+                "and my Ph.D. thesis defense, 2024–2026.",
                 size=14.5, color=theme.ON_SURFACE_VARIANT,
             ),
             *[_talk(p) for p in content.PRESENTATIONS],

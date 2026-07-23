@@ -6,6 +6,7 @@ NAV_ITEMS = (
     ("Home", "/"),
     ("CV", "/cv"),
     ("Talks", "/presentations"),
+    ("Teaching", "/teaching"),
     ("Projects", "/projects"),
     ("Contact", "/contact"),
 )

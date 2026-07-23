@@ -9,8 +9,7 @@ def footer() -> ft.Container:
         content=ft.Column(
             [
                 ft.Text(
-                    f"© 2026 {content.NAME} · Built with Flet + labforge's "
-                    "paper theme",
+                    f"© 2026 {content.NAME} · Built with Flet",
                     size=12,
                     color=theme.ON_SURFACE_VARIANT,
                     text_align=ft.TextAlign.CENTER,

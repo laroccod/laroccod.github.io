@@ -28,7 +28,7 @@ def build(page: ft.Page) -> ft.View:
             ft.Text(
                 "Interactive scientific applications and the open-source "
                 "research software behind my publications. Live demos are "
-                "wired in as they come online — screenshots and source links "
+                "wired in as they come online; screenshots and source links "
                 "in the meantime.",
                 size=14.5, color=theme.ON_SURFACE_VARIANT,
             ),

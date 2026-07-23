@@ -50,7 +50,7 @@ def build(page: ft.Page) -> ft.View:
             section_title("Get in Touch", kicker="Contact"),
             ft.Text(
                 f"Based in {content.LOCATION}. The fastest way to reach me "
-                "is email — I'm happy to talk about research software, "
+                "is email. I'm happy to talk about research software, "
                 "simulation tooling, and opportunities.",
                 size=14.5, color=theme.ON_SURFACE_VARIANT,
             ),

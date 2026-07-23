@@ -19,7 +19,7 @@ EMAIL = "laroccod@uci.edu"
 GITHUB = "https://github.com/laroccod"
 
 TAGLINE = (
-    "I build open-source simulation and modeling tools for particle physics — "
+    "I build open-source simulation and modeling tools for particle physics: "
     "Monte Carlo frameworks, statistical inference, and the software that makes "
     "them usable."
 )
@@ -38,6 +38,7 @@ THESIS_TITLE = (
     "in Colliders and Fixed Target Experiments"
 )
 THESIS_URL = "https://escholarship.org/uc/item/25v386s5"
+DEFENSE_SLIDES = "/talks/thesis-defense.pdf"
 THESIS_BLURB = (
     "My doctoral thesis develops the modeling, simulation, and statistical "
     "machinery to discover and characterize heavy neutral leptons at the LHC "
@@ -100,9 +101,9 @@ EXPERIENCE: tuple[Experience, ...] = (
             "external group for cosmology studies, and selected as a tool for "
             "the LLP2026 workshop's reinterpretation hackathon (University of "
             "Cambridge).",
-            "As a member of the FORESEE development team — an open-source "
+            "As a member of the FORESEE development team (an open-source "
             "Python Monte Carlo framework for projecting particle-physics "
-            "experiment sensitivity — re-engineered core components for the v2 "
+            "experiment sensitivity), re-engineered core components for the v2 "
             "release: vectorized numerical kernels with Numba JIT compilation, "
             "compressed multi-GB simulation spectra ~40× (15 GB → 400 MB), "
             "built a unified model library, and extended the framework to a "
@@ -245,9 +246,16 @@ class Presentation:
     where: str
     title: str
     url: str = ""
+    slides: str = ""  # site-relative PDF path under src/assets (e.g. /talks/x.pdf)
 
 
 PRESENTATIONS: tuple[Presentation, ...] = (
+    Presentation(
+        date="Jun 2026", kind="Thesis defense",
+        event="Ph.D. Thesis Defense", where="UC Irvine",
+        title=THESIS_TITLE,
+        slides=DEFENSE_SLIDES,
+    ),
     Presentation(
         date="Mar 2026", kind="Contributed talk",
         event="9th Forward Physics Facility Meeting", where="CERN",
@@ -255,6 +263,7 @@ PRESENTATIONS: tuple[Presentation, ...] = (
               "Discriminating Majorana versus Dirac, and Using FASER2 as a "
               "Trigger for ATLAS",
         url="https://indico.cern.ch/event/1609755/contributions/6902878/",
+        slides="/talks/fpf9.pdf",
     ),
     Presentation(
         date="Nov 2025", kind="Invited seminar",
@@ -262,6 +271,7 @@ PRESENTATIONS: tuple[Presentation, ...] = (
         title="Simulating and Characterizing Heavy Neutral Leptons at Forward "
               "Physics Experiments",
         url="https://indico.bnl.gov/event/30171/",
+        slides="/talks/hnl-seminar-2025.pdf",
     ),
     Presentation(
         date="Nov 2025", kind="Invited seminar",
@@ -269,6 +279,7 @@ PRESENTATIONS: tuple[Presentation, ...] = (
         where="Stony Brook University",
         title="Simulating and Characterizing Heavy Neutral Leptons at Forward "
               "Physics Experiments",
+        slides="/talks/hnl-seminar-2025.pdf",
     ),
     Presentation(
         date="Aug 2025", kind="Contributed talk",
@@ -277,6 +288,7 @@ PRESENTATIONS: tuple[Presentation, ...] = (
         title="Simulating Heavy Neutral Leptons with General Couplings at "
               "Collider and Fixed Target Experiments",
         url="https://indico.cern.ch/event/1446820/contributions/6588109/",
+        slides="/talks/susy-2025.pdf",
     ),
     Presentation(
         date="Mar 2025", kind="Contributed talk",
@@ -284,6 +296,7 @@ PRESENTATIONS: tuple[Presentation, ...] = (
         title="Characterizing long-lived particles at forward-physics "
               "experiments in the presence of a signal excess",
         url="https://schedule.aps.org/smt/2025/events/APR-S09/2",
+        slides="/talks/aps-2025.pdf",
     ),
     Presentation(
         date="Jun 2024", kind="Contributed talk",
@@ -292,12 +305,13 @@ PRESENTATIONS: tuple[Presentation, ...] = (
         title="Simulating Heavy Neutral Leptons with General Couplings at "
               "Collider and Fixed Target Experiments",
         url="https://indico.global/event/688/contributions/17445/",
+        slides="/talks/flasy-2024.pdf",
     ),
 )
 
 
 TEACHING: tuple[str, ...] = (
-    "Teaching Assistant, UC Irvine Physics & Astronomy — 11 courses across "
+    "Teaching Assistant, UC Irvine Physics & Astronomy: 11 courses across "
     "upper- and lower-division lecture and laboratory sections (2021–2026).",
     "UAEC delegate, Annual High-Energy Physics Advocacy Trip, Washington DC "
     "(Fermilab, 2025).",
@@ -305,6 +319,111 @@ TEACHING: tuple[str, ...] = (
     "Group Tutor, upper-division Quantum Mechanics, UC Berkeley (2021).",
     "Honors Mathematics Tutor, Orange Coast College Student Success Center "
     "(2018–2019).",
+)
+
+
+# ---------------------------------------------------------------------------
+# Teaching page (transcribed from the teaching resume in content/teaching/)
+# ---------------------------------------------------------------------------
+
+TEACHING_PROFILE = (
+    "First-generation college student and community college alumnus (Orange "
+    "Coast College) with teaching-assistant experience across 11 upper- and "
+    "lower-division physics lecture and laboratory courses (including "
+    "calculus-based and algebra-based introductory sequences and a "
+    "general-education course for non-majors), plus several years of group "
+    "and one-on-one tutoring in physics and mathematics. Committed to clear, "
+    "accessible instruction and to supporting students from community "
+    "college, first-generation, and historically underrepresented "
+    "backgrounds."
+)
+
+
+@dataclass(frozen=True)
+class TeachingRole:
+    role: str
+    org: str
+    dates: str
+    bullets: tuple[str, ...]
+
+
+TEACHING_ROLES: tuple[TeachingRole, ...] = (
+    TeachingRole(
+        role="Teaching Assistant",
+        org="UC Irvine, Department of Physics & Astronomy",
+        dates="2021 – 2026",
+        bullets=(
+            "Teaching assistant for 11 undergraduate physics courses "
+            "spanning the introductory and upper-division curriculum: "
+            "leading discussion and laboratory sections, holding regular "
+            "office hours, supervising laboratory work and safety, and "
+            "grading.",
+            "Upper division: Electromagnetic Theory, Statistical Physics, "
+            "and Advanced Laboratory.",
+            "Lower-division lecture: Classical Physics (calculus-based "
+            "mechanics), Basic Physics for the life sciences, How Things "
+            "Work (physics of modern technology, for non-majors), and an "
+            "honors science seminar.",
+            "Instructional laboratories: Classical Physics Laboratory "
+            "(mechanics; electricity & magnetism) and Basic Physics "
+            "Laboratory.",
+            "Guided students through hands-on experiments, data analysis, "
+            "and the treatment of measurement uncertainty; translated "
+            "abstract theory into worked examples and physical intuition "
+            "in discussion sections.",
+        ),
+    ),
+    TeachingRole(
+        role="Group Tutor",
+        org="UC Berkeley, Department of Physics",
+        dates="2021",
+        bullets=(
+            "Led group tutoring sessions for upper-division Quantum "
+            "Mechanics, helping students work through problem sets and "
+            "prepare for examinations.",
+        ),
+    ),
+    TeachingRole(
+        role="On-site Mathematics Tutor",
+        org="Orange Coast College, Student Success Center",
+        dates="2018 – 2019",
+        bullets=(
+            "Provided drop-in and scheduled tutoring in the community "
+            "college mathematics sequence (through calculus) for a diverse, "
+            "largely first-generation and returning-student population.",
+        ),
+    ),
+)
+
+
+COURSES_PREPARED: tuple[SkillGroup, ...] = (
+    SkillGroup("Introductory / general physics", (
+        "Mechanics", "Electricity & magnetism", "Waves", "Thermodynamics",
+        "Modern physics", "Algebra- and calculus-based",
+        "Lecture and laboratory",
+    )),
+    SkillGroup("Upper-division physics", (
+        "Classical mechanics", "Electromagnetism",
+        "Statistical & thermal physics", "Quantum mechanics",
+        "Modern / particle physics",
+    )),
+    SkillGroup("Mathematics", (
+        "Pre-calculus", "Calculus sequence", "Linear algebra",
+        "Differential equations",
+    )),
+    SkillGroup("Astronomy", (
+        "Introductory astronomy",
+    )),
+)
+
+
+MENTORING: tuple[str, ...] = (
+    "Tutor, CAL-BRIDGE program, UC Irvine (2024): mentoring and academic "
+    "support for undergraduates from underrepresented backgrounds pursuing "
+    "physics and astronomy.",
+    "Delegate, UC Academic-Engagement Coalition (UAEC), Annual High-Energy "
+    "Physics Advocacy Trip, Washington DC (Fermilab, 2025): science "
+    "communication and advocacy with policymakers.",
 )
 
 

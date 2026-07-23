@@ -29,12 +29,12 @@ PROJECTS: tuple[Project, ...] = (
         tagline="Wrap plain Python functions into a small scientific app.",
         description=(
             "A Python framework I designed and published that turns plain "
-            "functions — a simulation worker, matplotlib visualizations, "
-            "analysis routines, and LaTeX theory notes — into a polished "
+            "functions (a simulation worker, matplotlib visualizations, "
+            "analysis routines, and LaTeX theory notes) into a polished "
             "4-page scientific app (Theory → Simulation → Visualization → "
             "Analysis) with auto-generated parameter controls, a parameter-"
             "scan engine, and 8 built-in themes. This site uses labforge's "
-            "'instrument' design system."
+            "'paper' design system."
         ),
         tech=("Python", "Flet", "Matplotlib", "PyPI package"),
         role="Author & maintainer",
@@ -58,7 +58,7 @@ PROJECTS: tuple[Project, ...] = (
             "A labforge app wrapping the FORESEE Monte Carlo framework: pick "
             "a beyond-Standard-Model particle model on the theory page, then "
             "cache production spectra, generate signal events, and scan the "
-            "discovery reach of forward LHC experiments — with live plots of "
+            "discovery reach of forward LHC experiments, with live plots of "
             "hadron spectra, production rates, energy distributions, and "
             "sensitivity reach."
         ),
@@ -95,7 +95,7 @@ PROJECTS: tuple[Project, ...] = (
         name="FORESEE",
         tagline="Sensitivity projections for the LHC's forward experiments.",
         description=(
-            "The FORward Experiment SEnsitivity Estimator — the community "
+            "The FORward Experiment SEnsitivity Estimator: the community "
             "Monte Carlo framework for projecting new-physics reach at "
             "forward LHC and fixed-target experiments. For the v2 release I "
             "re-engineered core numerical kernels (vectorization + Numba "

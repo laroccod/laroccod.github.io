@@ -27,7 +27,6 @@ def build(page: ft.Page) -> ft.View:
 
     intro = ft.Column(
         [
-            ft.Text("Hi, I'm", size=18, color=theme.ON_SURFACE_VARIANT),
             ft.Text(content.NAME, size=44, weight=ft.FontWeight.BOLD,
                     color=theme.ON_SURFACE),
             ft.Text(content.TITLE, size=18, color=theme.ACCENT,
@@ -85,8 +84,18 @@ def build(page: ft.Page) -> ft.View:
                         weight=ft.FontWeight.W_600, color=theme.ON_SURFACE),
                 ft.Text(content.THESIS_BLURB, size=14,
                         color=theme.ON_SURFACE_VARIANT),
-                ft.Row([link_button("Read on eScholarship", content.THESIS_URL,
-                                    ft.Icons.MENU_BOOK)]),
+                ft.Row(
+                    [
+                        link_button("Read on eScholarship", content.THESIS_URL,
+                                    ft.Icons.MENU_BOOK),
+                        link_button("Defense slides (PDF)",
+                                    content.DEFENSE_SLIDES,
+                                    ft.Icons.PICTURE_AS_PDF),
+                    ],
+                    wrap=True,
+                    spacing=8,
+                    run_spacing=8,
+                ),
             ],
             spacing=10,
         )

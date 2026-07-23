@@ -311,8 +311,7 @@ TEACHING: tuple[str, ...] = (
 CONTACT_LINKS: tuple[Link, ...] = (
     Link("Email", f"mailto:{EMAIL}", "EMAIL"),
     Link("GitHub", GITHUB, "CODE"),
+    Link("LinkedIn", "https://www.linkedin.com/in/laroccod/", "WORK"),
+    Link("ORCID", "https://orcid.org/0000-0001-6565-8637", "BADGE"),
     Link("Ph.D. Thesis", THESIS_URL, "SCHOOL"),
-    # Add when available:
-    # Link("LinkedIn", "https://www.linkedin.com/in/...", "WORK"),
-    # Link("ORCID", "https://orcid.org/...", "BADGE"),
 )

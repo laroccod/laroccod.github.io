@@ -56,7 +56,6 @@ def build(page: ft.Page) -> ft.View:
                                 url=p.url,
                             ),
                         ],
-                        wrap=True,
                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
                 ],

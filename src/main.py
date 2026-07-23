@@ -16,6 +16,7 @@ ROUTES = {
 def main(page: ft.Page):
     page.title = f"{content.NAME} — Particle Physics & Scientific Software"
     page.theme_mode = ft.ThemeMode.DARK
+    page.theme = theme.build_theme()
     page.dark_theme = theme.build_theme()
     page.bgcolor = theme.SURFACE
     page.padding = 0

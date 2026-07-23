@@ -56,9 +56,8 @@ def project_card(page: ft.Page, project: Project) -> ft.Container:
             ft.Text(project.role, size=12, color=theme.PINK,
                     weight=ft.FontWeight.W_600),
         ],
-        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        spacing=14,
         vertical_alignment=ft.CrossAxisAlignment.CENTER,
-        wrap=True,
     )
 
     body: list[ft.Control] = [
@@ -87,7 +86,6 @@ def timeline_entry(title: str, subtitle: str, dates: str,
                 ft.Text(dates, size=13, color=theme.ACCENT),
             ],
             vertical_alignment=ft.CrossAxisAlignment.START,
-            wrap=True,
         ),
         ft.Text(subtitle, size=14, color=theme.ON_SURFACE_VARIANT),
     ]

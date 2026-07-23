@@ -29,6 +29,16 @@ def link_button(label: str, url: str, icon=None) -> ft.OutlinedButton:
 
 
 def cta_button(label: str, on_click=None, url: str = "", primary=True):
-    cls = ft.FilledButton if primary else ft.OutlinedButton
     kwargs = {"url": url} if url else {"on_click": on_click}
-    return cls(content=ft.Text(label, weight=ft.FontWeight.W_600), **kwargs)
+    if primary:
+        return ft.FilledButton(
+            content=ft.Text(label, weight=ft.FontWeight.W_600,
+                            color=theme.ON_ACCENT),
+            bgcolor=theme.ACCENT,
+            **kwargs,
+        )
+    return ft.OutlinedButton(
+        content=ft.Text(label, weight=ft.FontWeight.W_600,
+                        color=theme.ACCENT),
+        **kwargs,
+    )

@@ -41,7 +41,6 @@ def navbar(page: ft.Page) -> ft.Container:
             ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            wrap=True,
         ),
         bgcolor=theme.SURFACE_LOWEST,
         padding=ft.Padding.symmetric(horizontal=16, vertical=6),

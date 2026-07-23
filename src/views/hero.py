@@ -20,6 +20,8 @@ def build(page: ft.Page) -> ft.View:
         border=ft.Border.all(3, theme.ACCENT_DIM),
         border_radius=136,
         padding=4,
+        width=274,
+        height=274,
         alignment=ft.Alignment.CENTER,
     )
 

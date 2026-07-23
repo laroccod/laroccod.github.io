@@ -5,6 +5,17 @@ All notable changes to the portfolio site. Format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Mobile navbar overflow: on narrow viewports the horizontal link row plus
+  theme picker overflowed and clipped ("Home CV Talks Teaching Proje..."),
+  leaving the bar unusable. The navbar is now responsive
+  (`src/components/navbar.py`): at/below 780px it collapses to a brand +
+  hamburger row, and the hamburger toggles a stacked drop-down menu (the six
+  links as full-width tap targets plus the theme picker below a divider).
+  Wide viewports keep the original horizontal bar. The layout is chosen at
+  build time from `page.width` and re-chosen live on `page.on_resize`.
+
 ## [0.3.0] - 2026-07-23
 
 ### Added

@@ -1,0 +1,17 @@
+# PRIVATE raw source material (resume with phone number, application ledger,
+# original photos). NEVER commit this directory — this repo is public.
+content/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Flet / Flutter build output (deployed via CI artifact, not committed)
+build/
+
+# Local tool state
+.claude/settings.local.json

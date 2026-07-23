@@ -7,6 +7,29 @@ All notable changes to the portfolio site. Format follows
 
 ### Added
 
+- Motion pass inspired by labforge 0.3.0's UI polish:
+  - Persistent navbar shell: navigation now swaps only the page body (with a
+    soft fade) instead of rebuilding the whole view, and the active nav link
+    gets an animated sliding underline.
+  - Terminal brand mark: a terminal glyph on an accent tile next to "DLR"
+    (labforge's app-mark style); the DLR letters scatter apart on hover and
+    spring back (ported from labforge's animated wordmark).
+  - Hero name animation: "Daniel La Rocco" plays a slow letter-by-letter wave
+    followed by an accent-colour shimmer sweep, once on load and again on
+    hover; the hero row fades in and rises on mount.
+  - Hover motion: project screenshots (clickable, they open the lightbox)
+    scale up slightly on hover.
+  - Roboto Mono accents (bundled in `assets/fonts/`): brand, section kickers,
+    tech chips, and timeline dates now use labforge's instrument-panel mono.
+- Theme picker in the navbar: a dropdown that switches the site between a
+  curated set of seven palettes: labforge's Paper, Neon Gold, Mint and
+  Lavender, plus three custom palettes built from coolors.co seeds (Ember,
+  Olive, Prism).
+  `theme.py` holds the palette registry and an `apply(name)` that rebinds the
+  colour constants; the router rebuilds the active view so the new palette
+  (and light/dark mode) takes effect. The choice persists across reloads via
+  `SharedPreferences` (a saved theme that no longer exists falls back to
+  Paper).
 - Teaching page (`/teaching`): profile, TA/tutoring roles, courses prepared
   to teach, mentoring & outreach; new "Teaching" navbar item.
 - Slides PDFs for all talks (`src/assets/talks/`), linked with a

@@ -2,13 +2,12 @@ import flet as ft
 
 import theme
 from components.cards import project_card
-from components.navbar import navbar
 from components.footer import footer
 from components.section import content_column, section_title
 from data.projects import PROJECTS
 
 
-def build(page: ft.Page) -> ft.View:
+def build(page: ft.Page) -> ft.Control:
     featured = [p for p in PROJECTS if p.featured]
     other = [p for p in PROJECTS if not p.featured]
 
@@ -38,19 +37,9 @@ def build(page: ft.Page) -> ft.View:
         ]
     )
 
-    return ft.View(
-        route="/projects",
-        controls=[
-            navbar(page),
-            ft.Column(
-                [body, footer()],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                scroll=ft.ScrollMode.AUTO,
-                expand=True,
-            ),
-        ],
-        padding=0,
-        spacing=0,
-        bgcolor=theme.SURFACE,
+    return ft.Column(
+        [body, footer()],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        scroll=ft.ScrollMode.AUTO,
+        expand=True,
     )

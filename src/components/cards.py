@@ -18,19 +18,30 @@ def _lightbox(page: ft.Page, src: str, name: str):
     return open_lightbox
 
 
+def _thumb(page: ft.Page, src: str, name: str) -> ft.Container:
+    tile = ft.Container(
+        content=ft.Image(
+            src=src, height=150, fit=ft.BoxFit.CONTAIN, border_radius=8,
+        ),
+        on_click=_lightbox(page, src, name),
+        tooltip="Click to enlarge",
+        border=ft.Border.all(1, theme.OUTLINE_VARIANT),
+        border_radius=8,
+        scale=ft.Scale(1.0),
+        animate_scale=ft.Animation(150, ft.AnimationCurve.EASE_OUT),
+    )
+
+    def on_hover(e):
+        entering = str(e.data).lower() == "true"
+        tile.scale = ft.Scale(1.04 if entering else 1.0)
+        tile.update()
+
+    tile.on_hover = on_hover
+    return tile
+
+
 def screenshot_strip(page: ft.Page, project: Project) -> ft.Row:
-    thumbs = [
-        ft.Container(
-            content=ft.Image(
-                src=src, height=150, fit=ft.BoxFit.CONTAIN, border_radius=8,
-            ),
-            on_click=_lightbox(page, src, project.name),
-            tooltip="Click to enlarge",
-            border=ft.Border.all(1, theme.OUTLINE_VARIANT),
-            border_radius=8,
-        )
-        for src in project.screenshots
-    ]
+    thumbs = [_thumb(page, src, project.name) for src in project.screenshots]
     return ft.Row(thumbs, scroll=ft.ScrollMode.AUTO, spacing=10)
 
 
@@ -83,7 +94,8 @@ def timeline_entry(title: str, subtitle: str, dates: str,
             [
                 ft.Text(title, size=17, weight=ft.FontWeight.W_600,
                         color=theme.ON_SURFACE, expand=True),
-                ft.Text(dates, size=13, color=theme.ACCENT),
+                ft.Text(dates, size=13, color=theme.ACCENT,
+                        font_family=theme.FONT_MONO),
             ],
             vertical_alignment=ft.CrossAxisAlignment.START,
         ),

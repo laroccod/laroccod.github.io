@@ -1,14 +1,16 @@
+import asyncio
+
 import flet as ft
 
 import theme
 from components.chips import cta_button, link_button
-from components.navbar import navbar
 from components.footer import footer
 from components.section import content_column, panel
+from components.wordmark import wave_text
 from data import content
 
 
-def build(page: ft.Page) -> ft.View:
+def build(page: ft.Page) -> ft.Control:
     headshot = ft.Container(
         content=ft.Image(
             src="/headshot.jpg",
@@ -27,8 +29,11 @@ def build(page: ft.Page) -> ft.View:
 
     intro = ft.Column(
         [
-            ft.Text(content.NAME, size=44, weight=ft.FontWeight.BOLD,
-                    color=theme.ON_SURFACE),
+            # Name plays a slow wave then an accent shimmer: once on load
+            # (right after the entrance reveal) and again on hover.
+            wave_text(page, content.NAME, size=44,
+                      color=theme.ON_SURFACE, shimmer_color=theme.ACCENT,
+                      autoplay_delay=0.7),
             ft.Text(content.TITLE, size=18, color=theme.ACCENT,
                     weight=ft.FontWeight.W_600),
             ft.Text(content.TAGLINE, size=15,
@@ -58,11 +63,31 @@ def build(page: ft.Page) -> ft.View:
         run_spacing=24,
     )
 
+    # Entrance: the hero row fades in and rises a touch on mount.
+    reveal = ft.Container(
+        content=hero_row,
+        opacity=0,
+        offset=ft.Offset(0, 0.04),
+        animate_opacity=ft.Animation(450, ft.AnimationCurve.EASE_OUT),
+        animate_offset=ft.Animation(450, ft.AnimationCurve.EASE_OUT),
+    )
+
+    async def enter():
+        # One beat for the frame to mount, then animate to the final values.
+        await asyncio.sleep(0.06)
+        reveal.opacity = 1
+        reveal.offset = ft.Offset(0, 0)
+        page.update()
+
+    page.run_task(enter)
+
     summary = panel(
         ft.Column(
             [
                 ft.Text("ABOUT", size=12, color=theme.ACCENT,
-                        weight=ft.FontWeight.W_600),
+                        weight=ft.FontWeight.W_600,
+                        font_family=theme.FONT_MONO,
+                        style=ft.TextStyle(letter_spacing=1.5)),
                 ft.Text(content.SUMMARY, size=14.5, color=theme.ON_SURFACE),
             ],
             spacing=8,
@@ -75,8 +100,10 @@ def build(page: ft.Page) -> ft.View:
                 ft.Row(
                     [
                         ft.Icon(ft.Icons.SCHOOL, color=theme.SECONDARY, size=20),
-                        ft.Text("Ph.D. Thesis", size=12, color=theme.SECONDARY,
-                                weight=ft.FontWeight.W_600),
+                        ft.Text("PH.D. THESIS", size=12, color=theme.SECONDARY,
+                                weight=ft.FontWeight.W_600,
+                                font_family=theme.FONT_MONO,
+                                style=ft.TextStyle(letter_spacing=1.5)),
                     ],
                     spacing=8,
                 ),
@@ -101,19 +128,9 @@ def build(page: ft.Page) -> ft.View:
         )
     )
 
-    return ft.View(
-        route="/",
-        controls=[
-            navbar(page),
-            ft.Column(
-                [content_column([hero_row, summary, thesis]), footer()],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                scroll=ft.ScrollMode.AUTO,
-                expand=True,
-            ),
-        ],
-        padding=0,
-        spacing=0,
-        bgcolor=theme.SURFACE,
+    return ft.Column(
+        [content_column([reveal, summary, thesis]), footer()],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        scroll=ft.ScrollMode.AUTO,
+        expand=True,
     )

@@ -5,7 +5,8 @@ import theme
 
 def tech_chip(label: str) -> ft.Container:
     return ft.Container(
-        content=ft.Text(label, size=12, color=theme.ON_ACCENT_DIM),
+        content=ft.Text(label, size=12, color=theme.ON_ACCENT_DIM,
+                        font_family=theme.FONT_MONO),
         bgcolor=theme.ACCENT_DIM,
         border_radius=999,
         padding=ft.Padding.symmetric(horizontal=10, vertical=4),

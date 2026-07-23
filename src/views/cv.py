@@ -3,13 +3,12 @@ import flet as ft
 import theme
 from components.cards import timeline_entry
 from components.chips import tech_chip
-from components.navbar import navbar
 from components.footer import footer
 from components.section import content_column, panel, section_title
 from data import content
 
 
-def build(page: ft.Page) -> ft.View:
+def build(page: ft.Page) -> ft.Control:
     skills = panel(
         ft.Column(
             [
@@ -102,19 +101,9 @@ def build(page: ft.Page) -> ft.View:
         ]
     )
 
-    return ft.View(
-        route="/cv",
-        controls=[
-            navbar(page),
-            ft.Column(
-                [body, footer()],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                scroll=ft.ScrollMode.AUTO,
-                expand=True,
-            ),
-        ],
-        padding=0,
-        spacing=0,
-        bgcolor=theme.SURFACE,
+    return ft.Column(
+        [body, footer()],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        scroll=ft.ScrollMode.AUTO,
+        expand=True,
     )

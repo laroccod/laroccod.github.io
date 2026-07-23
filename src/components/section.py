@@ -8,7 +8,9 @@ def section_title(text: str, kicker: str = "") -> ft.Column:
     if kicker:
         controls.append(
             ft.Text(kicker.upper(), size=12, color=theme.ACCENT,
-                    weight=ft.FontWeight.W_600)
+                    weight=ft.FontWeight.W_600,
+                    font_family=theme.FONT_MONO,
+                    style=ft.TextStyle(letter_spacing=1.5))
         )
     controls.append(
         ft.Text(text, size=30, weight=ft.FontWeight.BOLD,

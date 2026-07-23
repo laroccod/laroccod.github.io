@@ -1,7 +1,6 @@
 import flet as ft
 
 import theme
-from components.navbar import navbar
 from components.footer import footer
 from components.section import content_column, panel, section_title
 from data import content
@@ -44,7 +43,7 @@ def _talk(p: content.Presentation) -> ft.Container:
     return panel(ft.Column(rows, spacing=6), padding=16)
 
 
-def build(page: ft.Page) -> ft.View:
+def build(page: ft.Page) -> ft.Control:
     body = content_column(
         [
             section_title("Conference Talks & Seminars", kicker="Presentations"),
@@ -57,19 +56,9 @@ def build(page: ft.Page) -> ft.View:
         ]
     )
 
-    return ft.View(
-        route="/presentations",
-        controls=[
-            navbar(page),
-            ft.Column(
-                [body, footer()],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                scroll=ft.ScrollMode.AUTO,
-                expand=True,
-            ),
-        ],
-        padding=0,
-        spacing=0,
-        bgcolor=theme.SURFACE,
+    return ft.Column(
+        [body, footer()],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        scroll=ft.ScrollMode.AUTO,
+        expand=True,
     )

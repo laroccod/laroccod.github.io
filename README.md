@@ -17,5 +17,3 @@ pip install flet[all]==0.86.0
 flet run src/main.py                       # desktop preview
 flet build web --route-url-strategy hash   # static build → build/web
 ```
-
-See `CLAUDE.md` for architecture notes.

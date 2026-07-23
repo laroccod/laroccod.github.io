@@ -5,6 +5,7 @@ import flet as ft
 import theme
 from components.chips import cta_button, link_button
 from components.footer import footer
+from components.matrix_rain import rain_backdrop
 from components.section import content_column, panel
 from components.wordmark import wave_text
 from data import content
@@ -128,9 +129,20 @@ def build(page: ft.Page) -> ft.Control:
         )
     )
 
-    return ft.Column(
+    body = ft.Column(
         [content_column([reveal, summary, thesis]), footer()],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         scroll=ft.ScrollMode.AUTO,
+        expand=True,
+    )
+
+    # Glyph-rain band behind the scrolling body, pinned to the top; its
+    # loops stop when the visitor navigates off the hero route.
+    return ft.Stack(
+        [
+            ft.Container(rain_backdrop(page),
+                         alignment=ft.Alignment.TOP_CENTER),
+            body,
+        ],
         expand=True,
     )

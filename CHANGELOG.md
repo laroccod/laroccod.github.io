@@ -7,6 +7,24 @@ All notable changes to the portfolio site. Format follows
 
 ### Added
 
+- Matrix-style physics-glyph rain behind the hero
+  (`src/components/matrix_rain.py`): columns of Greek letters, operators and
+  digits (RobotoMono-covered set) fall across a full-width band at the top of
+  the home page, in theme accent colours with a secondary-colour minority.
+  Flutter's implicit animations carry each fall, so the Pyodide runtime only
+  retargets drops a few times per second; drops seed mid-flight so the field
+  opens in its steady-state distribution, a vertical gradient dissolves the
+  band toward the bottom, and a second mask knocks the glyphs down to 5%
+  over the hero intro text (which has no card behind it).
+- Matrix palette in the theme picker: phosphor green (#00FF41) on black with
+  an amber terminal counterpoint as the secondary colour.
+
+### Changed
+
+- Matrix is now the default theme (was Paper); it leads the picker order and
+  is the fallback for unknown saved theme names.
+- The hero name shimmer sweeps more slowly (50 ms per letter, was 15 ms).
+
 - Motion pass inspired by labforge 0.3.0's UI polish:
   - Persistent navbar shell: navigation now swaps only the page body (with a
     soft fade) instead of rebuilding the whole view, and the active nav link

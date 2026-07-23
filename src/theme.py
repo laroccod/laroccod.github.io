@@ -1,8 +1,10 @@
 """Site theme: the labforge palette registry.
 
 The framework this site showcases ships a small table of hand-tuned palettes;
-the site carries a curated set: labforge's paper, neon gold, mint and lavender
-plus three custom palettes built from coolors.co seeds (ember, olive, prism).
+the site carries a curated set: a custom Matrix palette (the default, phosphor
+green on black to match the hero glyph rain), labforge's paper, neon gold,
+mint and lavender, plus three palettes built from coolors.co seeds (ember,
+olive, prism).
 It runs the same design system, and the navbar theme picker lets a visitor
 switch between them.
 
@@ -17,6 +19,25 @@ import flet as ft
 # Palette table copied from labforge src/labforge/theme.py (pure hex, no import).
 # Ordered; the first entry is the default and drives the initial render.
 THEMES: dict[str, dict] = {
+    "matrix": {
+        "note": "Phosphor green on black with an amber terminal counterpoint.",
+        "mode": "dark",
+        "accent": "#00FF41",
+        "on_accent": "#00140A",
+        "accent_dim": "#003B14",
+        "on_accent_dim": "#5CFF8A",
+        "surface": "#010401",
+        "surface_lowest": "#000000",
+        "surface_low": "#04140A",
+        "surface_container": "#061A0E",
+        "surface_high": "#0A2413",
+        "surface_highest": "#0E2E18",
+        "on_surface": "#D2FFE0",
+        "on_surface_variant": "#6FAE82",
+        "outline": "#14532B",
+        "outline_variant": "#0B3119",
+        "model": "#FFB000",
+    },
     "paper": {
         "note": "Warm paper surfaces, graphite ink and a vermilion accent.",
         "mode": "light",
@@ -154,9 +175,10 @@ THEMES: dict[str, dict] = {
     },
 }
 
-DEFAULT = "paper"
+DEFAULT = "matrix"
 # Human-facing labels for the picker (kebab keys read oddly in a dropdown).
 LABELS = {
+    "matrix": "Matrix",
     "paper": "Paper",
     "neon_gold": "Neon Gold",
     "mint": "Mint",

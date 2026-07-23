@@ -156,7 +156,7 @@ def wave_text(page: ft.Page, text: str, *, size: int,
                 if i >= 2:
                     letters[i - 2].content.color = color or None
                 page.update()
-                await asyncio.sleep(0.015)
+                await asyncio.sleep(0.05)
             page.update()
         finally:
             state["running"] = False

@@ -251,7 +251,7 @@ class Presentation:
 
 PRESENTATIONS: tuple[Presentation, ...] = (
     Presentation(
-        date="Jun 2026", kind="Thesis defense",
+        date="May 2026", kind="Thesis defense",
         event="Ph.D. Thesis Defense", where="UC Irvine",
         title=THESIS_TITLE,
         slides=DEFENSE_SLIDES,

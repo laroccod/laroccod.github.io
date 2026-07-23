@@ -13,5 +13,7 @@ __pycache__/
 # Flet / Flutter build output (deployed via CI artifact, not committed)
 build/
 
-# Local tool state
-.claude/settings.local.json
+# Claude Code files (local tool state + working docs)
+.claude/
+CLAUDE.md
+TASKLOG.md

@@ -5,6 +5,8 @@ All notable changes to the portfolio site. Format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-23
+
 ### Added
 
 - Matrix-style physics-glyph rain behind the hero
@@ -16,15 +18,8 @@ All notable changes to the portfolio site. Format follows
   opens in its steady-state distribution, a vertical gradient dissolves the
   band toward the bottom, and a second mask knocks the glyphs down to 5%
   over the hero intro text (which has no card behind it).
-- Matrix palette in the theme picker: phosphor green (#00FF41) on black with
-  an amber terminal counterpoint as the secondary colour.
-
-### Changed
-
-- Matrix is now the default theme (was Paper); it leads the picker order and
-  is the fallback for unknown saved theme names.
-- The hero name shimmer sweeps more slowly (50 ms per letter, was 15 ms).
-
+- Matrix palette: phosphor green (#00FF41) on black with an amber terminal
+  counterpoint as the secondary colour, designed to match the glyph rain.
 - Motion pass inspired by labforge 0.3.0's UI polish:
   - Persistent navbar shell: navigation now swaps only the page body (with a
     soft fade) instead of rebuilding the whole view, and the active nav link
@@ -40,14 +35,14 @@ All notable changes to the portfolio site. Format follows
   - Roboto Mono accents (bundled in `assets/fonts/`): brand, section kickers,
     tech chips, and timeline dates now use labforge's instrument-panel mono.
 - Theme picker in the navbar: a dropdown that switches the site between a
-  curated set of seven palettes: labforge's Paper, Neon Gold, Mint and
-  Lavender, plus three custom palettes built from coolors.co seeds (Ember,
-  Olive, Prism).
+  curated set of eight palettes: Matrix, labforge's Paper, Neon Gold, Mint
+  and Lavender, plus three custom palettes built from coolors.co seeds
+  (Ember, Olive, Prism).
   `theme.py` holds the palette registry and an `apply(name)` that rebinds the
   colour constants; the router rebuilds the active view so the new palette
   (and light/dark mode) takes effect. The choice persists across reloads via
-  `SharedPreferences` (a saved theme that no longer exists falls back to
-  Paper).
+  `SharedPreferences` (a saved theme that no longer exists falls back to the
+  default).
 - Teaching page (`/teaching`): profile, TA/tutoring roles, courses prepared
   to teach, mentoring & outreach; new "Teaching" navbar item.
 - Slides PDFs for all talks (`src/assets/talks/`), linked with a
@@ -58,6 +53,9 @@ All notable changes to the portfolio site. Format follows
 
 ### Changed
 
+- Matrix is the default theme (was Paper); it leads the picker order and is
+  the fallback for unknown saved theme names.
+- The hero name shimmer sweeps more slowly (50 ms per letter, was 15 ms).
 - Recropped the headshot to a face-centered square (from the high-res
   original) so the face sits in the middle of the circular frame.
 - Removed the "Hi, I'm" greeting on the hero and the "+ labforge's paper
@@ -67,6 +65,10 @@ All notable changes to the portfolio site. Format follows
   teaching text, project descriptions, contact blurb, page title).
 - Fixed stale labforge card text: the site uses the 'paper' design system,
   not 'instrument'.
+
+### Fixed
+
+- Thesis defense date on the talks page: May 2026 (was listed as Jun 2026).
 
 ## [0.2.0] - 2026-07-22
 

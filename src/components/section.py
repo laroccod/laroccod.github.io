@@ -37,6 +37,35 @@ def content_column(controls: list, spacing: int = theme.GUTTER) -> ft.Container:
     )
 
 
+def abstract_toggle(page: ft.Page, text: str,
+                    label: str = "abstract") -> list[ft.Control]:
+    """A "Show <label>" button plus the paragraph it reveals, as two controls
+    the caller drops into a column."""
+    body = ft.Container(
+        content=ft.Text(text, size=13.5, color=theme.ON_SURFACE_VARIANT),
+        visible=False,
+        padding=ft.Padding.only(left=12, top=2, bottom=2),
+        border=ft.Border(left=ft.BorderSide(2, theme.ACCENT_DIM)),
+    )
+    caption = ft.Text(f"Show {label}", size=13, color=theme.ACCENT)
+    caret = ft.Icon(ft.Icons.EXPAND_MORE, size=18, color=theme.ACCENT)
+
+    def toggle(e):
+        body.visible = not body.visible
+        caption.value = f"{'Hide' if body.visible else 'Show'} {label}"
+        caret.icon = (ft.Icons.EXPAND_LESS if body.visible
+                      else ft.Icons.EXPAND_MORE)
+        page.update()
+
+    button = ft.TextButton(
+        content=ft.Row([caption, caret], spacing=2, tight=True),
+        on_click=toggle,
+    )
+    # The button sits in its own Row so it hugs its content instead of
+    # stretching across the card (the parent column stretches its children).
+    return [ft.Row([button], spacing=0), body]
+
+
 def panel(content: ft.Control, padding: int = 20) -> ft.Container:
     return ft.Container(
         content=content,

@@ -3,6 +3,42 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.0] - 2026-07-27
+
+### Added
+
+- The talks page is now Papers/Talks: a Publications section leads the page
+  with each paper's abstract behind a "Show abstract" toggle and a strip of
+  select figures (click to enlarge, caption in the lightbox). The two HNL
+  papers carry four and two figures respectively, sized to fit the content
+  column without scrolling; the earlier biophysics papers render as plain
+  citations.
+- Talk cards now show rendered slide previews (title slide plus two content
+  slides per deck).
+- A Talks & Presentations section on the CV page: a compact citation list of
+  the same seven talks.
+- The hero's thesis card shows two figures from the thesis (HNL branching
+  fractions and the ATLAS/FASER2 signal topology) and the dissertation
+  abstract behind the same "Show abstract" toggle, which now lives in
+  `components/section.py` so both pages share it.
+- The glyph rain now also runs behind the contact page, masked across the
+  full content column (`rain_backdrop(..., text_zone=)`).
+- `tools/build_media.py` renders both asset families: paper figures from the
+  private `content/figures/` sources, and talk-slide previews from the
+  committed deck PDFs. The slides rendered per deck live in its `TALK_SLIDES`
+  map, and the figure strips wrap instead of scrolling, so a narrow viewport
+  pushes the overflow onto a second line rather than hiding it.
+
+### Changed
+
+- Navbar label "Talks" is now "Papers/Talks"; the mobile collapse breakpoint
+  moves from 780px to 850px to fit it.
+- The contact page no longer links the Ph.D. thesis (it is still on the
+  hero).
+- Project cards no longer show screenshots: the `screenshots` lists are empty
+  pending new captures. The card machinery is unchanged, so refilling a list
+  restores the strip.
+
 ## [0.4.0] - 2026-07-27
 
 ### Added

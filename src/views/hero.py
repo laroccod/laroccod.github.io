@@ -3,10 +3,11 @@ import asyncio
 import flet as ft
 
 import theme
+from components.cards import image_strip, thumb
 from components.chips import cta_button, link_button
 from components.footer import footer
 from components.matrix_rain import rain_backdrop
-from components.section import content_column, panel
+from components.section import abstract_toggle, content_column, panel
 from components.wordmark import wave_text
 from data import content
 
@@ -115,6 +116,13 @@ def build(page: ft.Page) -> ft.Control:
                         weight=ft.FontWeight.W_600, color=theme.ON_SURFACE),
                 ft.Text(content.THESIS_BLURB, size=14,
                         color=theme.ON_SURFACE_VARIANT),
+                *(abstract_toggle(page, content.THESIS_ABSTRACT)
+                  if content.THESIS_ABSTRACT else []),
+                image_strip(page, [
+                    thumb(page, f.src, "Ph.D. thesis", caption=f.caption,
+                          height=150, on_light=True)
+                    for f in content.THESIS_FIGURES
+                ]),
                 ft.Row(
                     [
                         link_button("Read on eScholarship", content.THESIS_URL,

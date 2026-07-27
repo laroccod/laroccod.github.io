@@ -119,17 +119,26 @@ def matrix_rain(page: ft.Page, *, width: int = 340, height: int = 340,
     )
 
 
-def rain_backdrop(page: ft.Page, *, width: int = 1920, height: int = 560,
-                  columns: int = 48) -> ft.Control:
-    """The site-wide backdrop: a full-width rain band under two masks.
+# Horizontal spans (as fractions of the band width) where the glyphs are
+# knocked down to a whisper because uncarded text sits on top of them. The
+# band and the 1080px content column are both centered, so a column-relative
+# zone lands at fixed band fractions at any viewport size: the hero's intro
+# occupies the left 58% of the column (~22%..54% of 1920), the contact page's
+# heading and blurb span the whole column (~22%..78%).
+HERO_TEXT_ZONE = (0.20, 0.56)
+COLUMN_TEXT_ZONE = (0.20, 0.80)
+MASK_FEATHER = 0.07  # ramp width on each side of the zone
 
-    A vertical gradient dissolves the drops toward the bottom of the band so
-    there is no hard clip line, and a horizontal mask knocks the glyphs down
-    to a whisper (5%) over the content column's text zone: the hero intro
-    has no card behind it, so glyphs there fight the name and tagline. The
-    band and the 1080px content column are both centered, so the text zone
-    lands at fixed fractions of the band width (left 58% of the column ~=
-    22%..54% of 1920) at any viewport size.
+
+def rain_backdrop(page: ft.Page, *, width: int = 1920, height: int = 560,
+                  columns: int = 48,
+                  text_zone: tuple[float, float] | None = HERO_TEXT_ZONE
+                  ) -> ft.Control:
+    """The site-wide backdrop: a full-width rain band under one or two masks.
+
+    A vertical gradient always dissolves the drops toward the bottom of the
+    band so there is no hard clip line. `text_zone` additionally masks a
+    horizontal span down to 5% for uncarded text (None to skip it).
     """
     band = ft.ShaderMask(
         content=matrix_rain(page, width=width, height=height,
@@ -141,6 +150,9 @@ def rain_backdrop(page: ft.Page, *, width: int = 1920, height: int = 560,
             colors=[ft.Colors.WHITE, ft.Colors.TRANSPARENT],
         ),
     )
+    if text_zone is None:
+        return band
+    start, end = text_zone
     clear = ft.Colors.with_opacity(0.05, ft.Colors.WHITE)
     return ft.ShaderMask(
         content=band,
@@ -150,6 +162,7 @@ def rain_backdrop(page: ft.Page, *, width: int = 1920, height: int = 560,
             end=ft.Alignment.CENTER_RIGHT,
             colors=[ft.Colors.WHITE, ft.Colors.WHITE, clear, clear,
                     ft.Colors.WHITE, ft.Colors.WHITE],
-            stops=[0.0, 0.13, 0.20, 0.56, 0.63, 1.0],
+            stops=[0.0, start - MASK_FEATHER, start, end,
+                   end + MASK_FEATHER, 1.0],
         ),
     )

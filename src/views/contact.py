@@ -2,6 +2,7 @@ import flet as ft
 
 import theme
 from components.footer import footer
+from components.matrix_rain import COLUMN_TEXT_ZONE, rain_backdrop
 from components.section import content_column, panel, section_title
 from data import content
 
@@ -57,9 +58,21 @@ def build(page: ft.Page) -> ft.Control:
         ]
     )
 
-    return ft.Column(
+    column = ft.Column(
         [body, footer()],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         scroll=ft.ScrollMode.AUTO,
+        expand=True,
+    )
+
+    # Same glyph rain as the hero, masked across the full content column
+    # (the heading and blurb here span the whole width). Its loops stop when
+    # the visitor navigates away.
+    return ft.Stack(
+        [
+            ft.Container(rain_backdrop(page, text_zone=COLUMN_TEXT_ZONE),
+                         alignment=ft.Alignment.TOP_CENTER),
+            column,
+        ],
         expand=True,
     )

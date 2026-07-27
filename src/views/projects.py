@@ -27,8 +27,7 @@ def build(page: ft.Page) -> ft.Control:
             ft.Text(
                 "Interactive scientific applications and the open-source "
                 "research software behind my publications. Live demos are "
-                "wired in as they come online; screenshots and source links "
-                "in the meantime.",
+                "wired in as they come online; source links in the meantime.",
                 size=14.5, color=theme.ON_SURFACE_VARIANT,
             ),
             *[project_card(page, p) for p in featured],

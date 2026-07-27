@@ -6,11 +6,21 @@ from components.section import panel
 from data.projects import Project
 
 
-def _lightbox(page: ft.Page, src: str, name: str):
+def _lightbox(page: ft.Page, src: str, name: str, caption: str = ""):
     def open_lightbox(e):
+        body: ft.Control = ft.Image(src=src, fit=ft.BoxFit.CONTAIN)
+        if caption:
+            body = ft.Column(
+                [
+                    body,
+                    ft.Text(caption, size=13, color=theme.ON_SURFACE_VARIANT),
+                ],
+                spacing=12,
+                tight=True,
+            )
         page.show_dialog(
             ft.AlertDialog(
-                content=ft.Image(src=src, fit=ft.BoxFit.CONTAIN),
+                content=body,
                 bgcolor=theme.SURFACE_LOWEST,
                 title=ft.Text(name, size=14, color=theme.ON_SURFACE_VARIANT),
             )
@@ -18,13 +28,21 @@ def _lightbox(page: ft.Page, src: str, name: str):
     return open_lightbox
 
 
-def _thumb(page: ft.Page, src: str, name: str) -> ft.Container:
+def thumb(page: ft.Page, src: str, name: str, caption: str = "",
+          height: int = 150, on_light: bool = False) -> ft.Container:
+    """Click-to-enlarge image tile with a hover lift.
+
+    Paper figures and slide renders are black-on-white line art, so
+    `on_light` mats them on white: on the dark palettes an unmatted plot
+    reads as a floating white rectangle with no edge."""
     tile = ft.Container(
         content=ft.Image(
-            src=src, height=150, fit=ft.BoxFit.CONTAIN, border_radius=8,
+            src=src, height=height, fit=ft.BoxFit.CONTAIN, border_radius=6,
         ),
-        on_click=_lightbox(page, src, name),
-        tooltip="Click to enlarge",
+        on_click=_lightbox(page, src, name, caption),
+        tooltip=caption or "Click to enlarge",
+        bgcolor=ft.Colors.WHITE if on_light else None,
+        padding=6 if on_light else 0,
         border=ft.Border.all(1, theme.OUTLINE_VARIANT),
         border_radius=8,
         scale=ft.Scale(1.0),
@@ -40,9 +58,16 @@ def _thumb(page: ft.Page, src: str, name: str) -> ft.Container:
     return tile
 
 
+def image_strip(page: ft.Page, thumbs: list[ft.Control]) -> ft.Row:
+    """Row of thumbnails, sized to fit the content column on a desktop
+    viewport. It wraps rather than scrolls, so a narrow viewport pushes the
+    overflow onto a second line instead of hiding it behind a scrollbar."""
+    return ft.Row(thumbs, wrap=True, spacing=10, run_spacing=10)
+
+
 def screenshot_strip(page: ft.Page, project: Project) -> ft.Row:
-    thumbs = [_thumb(page, src, project.name) for src in project.screenshots]
-    return ft.Row(thumbs, scroll=ft.ScrollMode.AUTO, spacing=10)
+    return image_strip(page, [thumb(page, src, project.name)
+                              for src in project.screenshots])
 
 
 def project_card(page: ft.Page, project: Project) -> ft.Container:

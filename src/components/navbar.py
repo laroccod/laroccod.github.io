@@ -6,7 +6,7 @@ from components.wordmark import scatter_text
 NAV_ITEMS = (
     ("Home", "/"),
     ("CV", "/cv"),
-    ("Talks", "/presentations"),
+    ("Papers/Talks", "/presentations"),
     ("Teaching", "/teaching"),
     ("Projects", "/projects"),
     ("Contact", "/contact"),
@@ -18,7 +18,8 @@ UNDERLINE_WIDTH = 20
 
 # At or below this page width the horizontal links + theme picker no longer fit,
 # so the bar collapses to a brand + hamburger row with a drop-down menu.
-MOBILE_MAX_WIDTH = 780
+# (Raised from 780 when "Talks" became the wider "Papers/Talks".)
+MOBILE_MAX_WIDTH = 850
 
 
 def navbar(page: ft.Page) -> tuple[ft.Container, callable]:

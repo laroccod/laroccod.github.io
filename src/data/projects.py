@@ -41,12 +41,7 @@ PROJECTS: tuple[Project, ...] = (
         github_url="https://github.com/laroccod/labforge",
         pypi_url="https://pypi.org/project/labforge/",
         demo_url="",  # Fly.io deployment planned — see TASKLOG
-        screenshots=(
-            "/projects/labforge/screenshot.png",
-            "/projects/labforge/multi_worker.png",
-            "/projects/labforge/theme_instrument.png",
-            "/projects/labforge/theme_lavender.png",
-        ),
+        screenshots=(),  # new screenshots pending
         featured=True,
     ),
     Project(
@@ -66,12 +61,7 @@ PROJECTS: tuple[Project, ...] = (
         role="Author",
         github_url="",  # repo not yet public
         demo_url="",    # deployment follows the public release
-        screenshots=(
-            "/projects/foresee-lab/reach_plot.png",
-            "/projects/foresee-lab/hadron_spectrum.png",
-            "/projects/foresee-lab/production_rate.png",
-            "/projects/foresee-lab/energy_histogram.png",
-        ),
+        screenshots=(),  # new screenshots pending
         featured=True,
     ),
     Project(

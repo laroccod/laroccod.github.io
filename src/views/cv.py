@@ -65,6 +65,38 @@ def build(page: ft.Page) -> ft.Control:
         for p in content.PUBLICATIONS
     ]
 
+    # Compact talk list: the papers & talks page carries the full cards
+    # (links, slide previews), so the CV entry stays a scannable citation.
+    talks = panel(
+        ft.Column(
+            [
+                ft.Column(
+                    [
+                        ft.Row(
+                            [
+                                ft.Text(p.date, size=12, color=theme.ACCENT,
+                                        font_family=theme.FONT_MONO,
+                                        width=90),
+                                ft.Text(p.kind, size=12,
+                                        color=theme.SECONDARY,
+                                        weight=ft.FontWeight.W_600),
+                            ],
+                            spacing=8,
+                        ),
+                        ft.Text(p.title, size=14,
+                                weight=ft.FontWeight.W_600,
+                                color=theme.ON_SURFACE),
+                        ft.Text(f"{p.event} · {p.where}", size=13,
+                                color=theme.ON_SURFACE_VARIANT),
+                    ],
+                    spacing=2,
+                )
+                for p in content.PRESENTATIONS
+            ],
+            spacing=14,
+        )
+    )
+
     teaching = panel(
         ft.Column(
             [
@@ -96,6 +128,8 @@ def build(page: ft.Page) -> ft.Control:
             skills,
             section_title("Publications"),
             *publications,
+            section_title("Talks & Presentations"),
+            talks,
             section_title("Teaching, Service & Outreach"),
             teaching,
         ]

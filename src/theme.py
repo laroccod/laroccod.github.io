@@ -1,10 +1,10 @@
 """Site theme: the labforge palette registry.
 
 The framework this site showcases ships a small table of hand-tuned palettes;
-the site carries a curated set: a custom Matrix palette (the default, phosphor
-green on black to match the hero glyph rain), labforge's paper, neon gold,
-mint and lavender, plus three palettes built from coolors.co seeds (ember,
-olive, prism).
+the site carries a curated set: a custom Matrix palette (phosphor green on
+black to match the hero glyph rain), labforge's paper, neon gold, mint and
+lavender (the default), plus three palettes built from coolors.co seeds
+(ember, olive, prism).
 It runs the same design system, and the navbar theme picker lets a visitor
 switch between them.
 
@@ -17,7 +17,7 @@ importable in the Pyodide/WASM build)."""
 import flet as ft
 
 # Palette table copied from labforge src/labforge/theme.py (pure hex, no import).
-# Ordered; the first entry is the default and drives the initial render.
+# Ordered for the picker; DEFAULT (below) drives the initial render.
 THEMES: dict[str, dict] = {
     "matrix": {
         "note": "Phosphor green on black with an amber terminal counterpoint.",
@@ -175,7 +175,7 @@ THEMES: dict[str, dict] = {
     },
 }
 
-DEFAULT = "matrix"
+DEFAULT = "lavender"
 # Human-facing labels for the picker (kebab keys read oddly in a dropdown).
 LABELS = {
     "matrix": "Matrix",

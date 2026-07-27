@@ -101,7 +101,7 @@ async def main(page: ft.Page):
     page.data = change_theme
     page.on_route_change = route_change
 
-    # Restore a previously chosen theme (best-effort; defaults to matrix).
+    # Restore a previously chosen theme (best-effort; defaults to lavender).
     try:
         saved = await prefs.get(THEME_PREF_KEY)
         if isinstance(saved, str) and saved in theme.THEMES:

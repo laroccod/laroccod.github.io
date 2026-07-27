@@ -5,6 +5,13 @@ All notable changes to the portfolio site. Format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Default theme is now `lavender` (light, violet accent on soft lavender
+  neutrals) instead of `matrix`; unknown saved theme names fall back to it too
+  (`src/theme.py`). The matrix palette stays in the picker, and the hero glyph
+  rain follows whatever palette is active.
+
 ## [0.3.1] - 2026-07-23
 
 ### Fixed

@@ -59,8 +59,8 @@ SUMMARY = (
 )
 
 THESIS_TITLE = (
-    "GeV-Scale Heavy Neutral Leptons: Modeling, Discovery and Characterization "
-    "in Colliders and Fixed Target Experiments"
+    "GeV-Scale Neutrinos: Modeling, Discovery and Characterization at Forward "
+    "Physics Experiments"
 )
 THESIS_URL = "https://escholarship.org/uc/item/25v386s5"
 DEFENSE_SLIDES = "/talks/thesis-defense.pdf"

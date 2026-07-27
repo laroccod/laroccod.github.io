@@ -31,6 +31,10 @@ All notable changes to the portfolio site. Format follows
 
 ### Changed
 
+- Corrected the thesis title to "GeV-Scale Neutrinos: Modeling, Discovery and
+  Characterization at Forward Physics Experiments". It comes from one
+  constant, so the hero card, the CV education entry, and the defense listing
+  all follow.
 - Navbar label "Talks" is now "Papers/Talks"; the mobile collapse breakpoint
   moves from 780px to 850px to fit it.
 - The contact page no longer links the Ph.D. thesis (it is still on the

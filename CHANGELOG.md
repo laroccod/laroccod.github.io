@@ -3,14 +3,30 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.4.0] - 2026-07-27
+
+### Added
+
+- New site typography. Space Mono is the page-wide font (bundled, replacing
+  the default sans), and the hero name + DLR brand mark render in Nabla, a
+  COLRv1 color font instanced at extrusion depth 180 / edge highlight 12 and
+  recolored to match every palette: light themes get a monochrome accent
+  ramp, dark themes an accent face over a muted counterpoint extrusion
+  (`tools/build_nabla_fonts.py` generates the 16 bundled builds, one base +
+  one brighter "glint" per theme, subset to printable ASCII). Roboto Mono
+  stays bundled for the glyph rain, which needs Greek coverage Space Mono
+  lacks.
+- The name shimmer works on the color font by sweeping a brighter build of
+  the same font across the letters (color fonts ignore text colour), and the
+  wave/glint timings are now explicit: the wave crosses the name in 1 s, the
+  glint in 250 ms (`wave_text` in `src/components/wordmark.py`).
 
 ### Changed
 
-- Default theme is now `lavender` (light, violet accent on soft lavender
-  neutrals) instead of `matrix`; unknown saved theme names fall back to it too
-  (`src/theme.py`). The matrix palette stays in the picker, and the hero glyph
-  rain follows whatever palette is active.
+- Default theme is now `neon_gold` (dark, pale gold accent on black with
+  violet counterpoints) instead of `matrix`; unknown saved theme names fall
+  back to it too (`src/theme.py`). All palettes stay in the picker, and the
+  hero glyph rain follows whatever palette is active.
 
 ## [0.3.1] - 2026-07-23
 

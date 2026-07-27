@@ -2,8 +2,8 @@
 
 The framework this site showcases ships a small table of hand-tuned palettes;
 the site carries a curated set: a custom Matrix palette (phosphor green on
-black to match the hero glyph rain), labforge's paper, neon gold, mint and
-lavender (the default), plus three palettes built from coolors.co seeds
+black to match the hero glyph rain), labforge's paper, neon gold (the
+default), mint and lavender, plus three palettes built from coolors.co seeds
 (ember, olive, prism).
 It runs the same design system, and the navbar theme picker lets a visitor
 switch between them.
@@ -175,7 +175,7 @@ THEMES: dict[str, dict] = {
     },
 }
 
-DEFAULT = "lavender"
+DEFAULT = "neon_gold"
 # Human-facing labels for the picker (kebab keys read oddly in a dropdown).
 LABELS = {
     "matrix": "Matrix",
@@ -193,9 +193,33 @@ GUTTER = 24
 SECTION_GAP = 56
 MAX_CONTENT_WIDTH = 1080
 
-# Instrument-panel accent font (bundled in assets/fonts, registered on
-# page.fonts by main.py). Used for the brand, kickers, chips and dates.
-FONT_MONO = "Roboto Mono"
+# Site-wide monospace (bundled in assets/fonts, registered on page.fonts by
+# main.py). The page theme sets it as the default family, so body text,
+# kickers, chips and dates all render in it.
+FONT_MONO = "Space Mono"
+
+# The hero glyph rain keeps Roboto Mono: its physics set needs Greek
+# coverage, which Space Mono lacks (matrix_rain.py checks the cmap).
+FONT_RAIN = "Roboto Mono"
+
+# Display font for the hero name and the DLR brand mark: Nabla, a COLRv1
+# color font instanced at EDPT=180/EHLT=12 and recolored per palette
+# (tools/build_nabla_fonts.py). Each theme has a base build plus a brighter
+# "glint" build that the name shimmer sweeps across (color fonts ignore the
+# text colour, so the glint swaps font families instead).
+# apply() rebinds these to the active theme's builds.
+FONT_NAME = ""
+FONT_NAME_GLINT = ""
+
+
+def nabla_fonts() -> dict[str, str]:
+    """Font registrations for every theme's Nabla build (family -> asset)."""
+    fonts = {}
+    for name in THEMES:
+        fonts[f"Nabla {name}"] = f"/fonts/nabla/{name}.ttf"
+        fonts[f"Nabla {name} glint"] = f"/fonts/nabla/{name}_glint.ttf"
+    return fonts
+
 
 # Active-theme state. `apply()` rebinds every constant below; views and
 # components read them at build time, so a rebuild picks up the new palette.
@@ -212,7 +236,7 @@ def apply(name: str) -> None:
     """Rebind the module-level colour constants to the named palette.
 
     Unknown names fall back to the default. Call before rebuilding views."""
-    global ACTIVE_NAME, MODE
+    global ACTIVE_NAME, MODE, FONT_NAME, FONT_NAME_GLINT
     global ACCENT, ON_ACCENT, ACCENT_DIM, ON_ACCENT_DIM
     global SURFACE, SURFACE_LOWEST, SURFACE_LOW, SURFACE_CONTAINER
     global SURFACE_HIGH, SURFACE_HIGHEST, ON_SURFACE, ON_SURFACE_VARIANT
@@ -221,6 +245,8 @@ def apply(name: str) -> None:
     t = THEMES.get(name) or THEMES[DEFAULT]
     ACTIVE_NAME = name if name in THEMES else DEFAULT
     MODE = t["mode"]
+    FONT_NAME = f"Nabla {ACTIVE_NAME}"
+    FONT_NAME_GLINT = f"Nabla {ACTIVE_NAME} glint"
 
     ACCENT = t["accent"]
     ON_ACCENT = t["on_accent"]
@@ -249,6 +275,7 @@ def theme_mode() -> ft.ThemeMode:
 
 def build_theme() -> ft.Theme:
     return ft.Theme(
+        font_family=FONT_MONO,
         color_scheme=ft.ColorScheme(
             primary=ACCENT,
             on_primary=ON_ACCENT,

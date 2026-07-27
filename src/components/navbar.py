@@ -105,8 +105,10 @@ def navbar(page: ft.Page) -> tuple[ft.Container, callable]:
         content=ft.Row(
             [
                 brand_mark,
+                # The DLR letters render in the theme's Nabla build, matching
+                # the hero name.
                 scatter_text(page, "DLR", size=18, color=theme.ACCENT,
-                             font_family=theme.FONT_MONO, spacing=1,
+                             font_family=theme.FONT_NAME, spacing=1,
                              throw_x=0.5, throw_y=0.25, throw_rot=0.35,
                              on_click=lambda e: page.navigate("/")),
             ],

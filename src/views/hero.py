@@ -30,10 +30,13 @@ def build(page: ft.Page) -> ft.Control:
 
     intro = ft.Column(
         [
-            # Name plays a slow wave then an accent shimmer: once on load
-            # (right after the entrance reveal) and again on hover.
+            # Name in the theme's Nabla build. It plays a slow wave then a
+            # glint (a brighter build of the same color font sweeps across):
+            # once on load, and again on hover.
             wave_text(page, content.NAME, size=44,
                       color=theme.ON_SURFACE, shimmer_color=theme.ACCENT,
+                      font_family=theme.FONT_NAME,
+                      glint_font_family=theme.FONT_NAME_GLINT,
                       autoplay_delay=0.7),
             ft.Text(content.TITLE, size=18, color=theme.ACCENT,
                     weight=ft.FontWeight.W_600),

@@ -20,7 +20,8 @@ import flet as ft
 import theme
 
 # RobotoMono-covered physics set (checked against the bundled TTF's cmap;
-# hbar U+210F is missing from the font, so it stays out).
+# hbar U+210F is missing from the font, so it stays out). The rain renders
+# in theme.FONT_RAIN: the site's Space Mono default has no Greek.
 GLYPHS = "ψνμπλφητρσξδεθΣΔΩΛΦΨ∂∫≈∞√±0123456789"
 
 FALL_MS = (6000, 13000)  # per-drop fall duration range
@@ -56,7 +57,7 @@ def matrix_rain(page: ft.Page, *, width: int = 340, height: int = 340,
             # Tail (top) fades out, head (bottom) is brightest.
             alpha = 0.10 + 0.80 * (j / (trail - 1))
             texts.append(ft.Text(random.choice(GLYPHS), size=font_size,
-                                 font_family=theme.FONT_MONO,
+                                 font_family=theme.FONT_RAIN,
                                  color=ft.Colors.with_opacity(alpha, base)))
         drop_h = trail * line_h
         travel = height / drop_h + 0.15  # offset units: fully past the bottom

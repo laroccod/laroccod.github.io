@@ -101,14 +101,20 @@ def scatter_text(page: ft.Page, text: str, *, size: int,
 def wave_text(page: ft.Page, text: str, *, size: int,
               weight: ft.FontWeight = ft.FontWeight.BOLD,
               color: str = "", shimmer_color: str = "",
-              font_family: str = "", spacing: int = 0,
+              font_family: str = "", glint_font_family: str = "",
+              spacing: int = 0,
+              wave_seconds: float = 1.0, glint_seconds: float = 0.25,
               autoplay_delay: float = 0.0) -> ft.Container:
     """Text as per-letter tiles that play a slow wave, then a shimmer.
 
     The wave rolls letter by letter: each tile rises and eases back down
     while its neighbour is still airborne, so the crest travels smoothly
-    across the word. The shimmer follows: a two-letter glint of
-    shimmer_color chases across the text and fades back to the base colour.
+    across the word; it crosses the whole word in wave_seconds. The shimmer
+    follows: a two-letter glint chases across the text in glint_seconds and
+    restores itself. With glint_font_family set, the glint sweeps the font
+    family instead of the colour: COLR color fonts (like Nabla) ignore the
+    text colour, so their glint is a brighter build of the same font
+    registered under a second family name.
 
     Plays on hover, and once on mount when autoplay_delay > 0 (seconds).
     A running flag keeps overlapping triggers from double-driving the
@@ -140,23 +146,34 @@ def wave_text(page: ft.Page, text: str, *, size: int,
         state["running"] = True
         try:
             # Slow wave: each letter starts rising, then is sent back down as
-            # the next one lifts; the 450 ms ease outlasts the 90 ms stagger,
-            # so the crest rolls without any letter pausing at the top.
+            # the next one lifts; the 450 ms ease outlasts the stagger, so
+            # the crest rolls without any letter pausing at the top. The
+            # stagger is derived from wave_seconds for the whole word.
+            wave_step = wave_seconds / max(len(letters), 1)
             for tile in letters:
                 tile.offset = ft.Offset(0, -0.42)
                 page.update()
-                await asyncio.sleep(0.09)
+                await asyncio.sleep(wave_step)
                 tile.offset = ft.Offset(0, 0)
             page.update()
             await asyncio.sleep(0.45)
-            # Shimmer: a two-letter glint sweeps across and restores itself.
+            # Shimmer: a two-letter glint sweeps across and restores itself,
+            # crossing the whole word in glint_seconds.
+            glint_step = glint_seconds / (len(letters) + 2)
             for i in range(len(letters) + 2):
                 if i < len(letters):
-                    letters[i].content.color = shimmer_color or None
+                    if glint_font_family:
+                        letters[i].content.font_family = glint_font_family
+                    else:
+                        letters[i].content.color = shimmer_color or None
                 if i >= 2:
-                    letters[i - 2].content.color = color or None
+                    if glint_font_family:
+                        letters[i - 2].content.font_family = (font_family
+                                                              or None)
+                    else:
+                        letters[i - 2].content.color = color or None
                 page.update()
-                await asyncio.sleep(0.05)
+                await asyncio.sleep(glint_step)
             page.update()
         finally:
             state["running"] = False

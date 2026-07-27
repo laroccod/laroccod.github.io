@@ -28,7 +28,12 @@ NAV_FADE_MS = 90
 async def main(page: ft.Page):
     page.title = f"{content.NAME} · Particle Physics & Scientific Software"
     page.padding = 0
-    page.fonts = {theme.FONT_MONO: "/fonts/RobotoMono.ttf"}
+    # Space Mono is the page-wide default (set in theme.build_theme); the
+    # Nabla builds are the per-theme display font for the name + brand, and
+    # Roboto Mono stays for the glyph rain (Greek coverage).
+    page.fonts = {theme.FONT_MONO: "/fonts/SpaceMono.ttf",
+                  theme.FONT_RAIN: "/fonts/RobotoMono.ttf",
+                  **theme.nabla_fonts()}
 
     prefs = ft.SharedPreferences()
 
@@ -101,7 +106,7 @@ async def main(page: ft.Page):
     page.data = change_theme
     page.on_route_change = route_change
 
-    # Restore a previously chosen theme (best-effort; defaults to lavender).
+    # Restore a previously chosen theme (best-effort; defaults to neon gold).
     try:
         saved = await prefs.get(THEME_PREF_KEY)
         if isinstance(saved, str) and saved in theme.THEMES:

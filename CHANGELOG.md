@@ -3,6 +3,25 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.1] - 2026-07-27
+
+### Added
+
+- The two 2021 biophysics papers now carry a figure each: the remdesivir
+  versus ATP insertion comparison in the SARS-CoV-2 polymerase (MSDE) and the
+  survey of viral polymerase folds and conserved motifs (CSBJ). Every
+  publication on the page now has at least one figure.
+
+### Changed
+
+- A publication card holding a single figure renders it at 300 px tall rather
+  than the 135 px the multi-figure strips use, since it has the whole row to
+  itself, and its caption line reads "Figure from the paper."
+- `tools/build_media.py` can encode figures as JPEG: an output name ending in
+  ".jpg" goes out as JPEG (quality 85) instead of PNG. The two new figures are
+  rendered molecular structures rather than line-art plots, so PNG cost 1.6 MB
+  and 490 KB where JPEG costs 500 KB and 160 KB.
+
 ## [0.5.0] - 2026-07-27
 
 ### Added

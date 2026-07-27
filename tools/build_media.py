@@ -31,13 +31,17 @@ PREVIEWS_OUT = TALKS_DIR / "previews"
 
 RENDER_DPI = 220      # oversample, then downscale for clean edges
 MAX_WIDTH = 1400      # px; plenty for the lightbox at any viewport
-# Figures are line art and stay PNG. Slide previews are dense mixed-content
-# pages where PNG costs ~5x what a high-quality JPEG does, and the whole site
-# ships as static assets over Pyodide, so they go out as JPEG.
+# Line-art figures stay PNG. Slide previews are dense mixed-content pages
+# where PNG costs ~5x what a high-quality JPEG does, and the whole site ships
+# as static assets over Pyodide, so they go out as JPEG. The same holds for
+# the few figures that are rendered molecular structures rather than plots:
+# give those a ".jpg" output name below.
 SLIDE_WIDTH = 1200
 SLIDE_QUALITY = 82
+FIGURE_QUALITY = 85
 
 # paper slug -> (output name, source file in content/figures/)
+# A bare output name gets ".png"; ".jpg" names are encoded as JPEG.
 FIGURES: dict[str, tuple[tuple[str, str], ...]] = {
     "characterizing-hnls": (
         ("1d-e", "1D-E-Model-1.pdf"),
@@ -48,6 +52,12 @@ FIGURES: dict[str, tuple[tuple[str, str], ...]] = {
     "simulating-hnls": (
         ("faser-pr-111", "FASERPR111.pdf"),
         ("111-brs", "111-Brs.pdf"),
+    ),
+    "remdesivir-insertion": (
+        ("rdv-atp-insertion.jpg", "MSDE.png"),
+    ),
+    "nucleotide-selectivity": (
+        ("polymerase-motifs.jpg", "CSBJ.jpg"),
     ),
 }
 
@@ -90,18 +100,23 @@ def build_figures() -> None:
     for slug, entries in FIGURES.items():
         for name, filename in entries:
             src = FIGURES_SRC / filename
-            dest = PAPERS_OUT / slug / f"{name}.png"
+            dest = PAPERS_OUT / slug / (name if name.endswith(".jpg")
+                                        else f"{name}.png")
             dest.parent.mkdir(parents=True, exist_ok=True)
+            raw = dest.with_name(f"{dest.stem}-raw.png")
             if src.suffix.lower() == ".pdf":
                 # Standalone figure PDFs cropped to the ink are only ~20 pt
                 # wide, so a fixed dpi renders them at thumbnail size; scale
                 # the dpi to land near MAX_WIDTH instead.
                 dpi = max(RENDER_DPI, round(72 * MAX_WIDTH / _pdf_width(src)))
-                _render(src, dest, dpi=dpi)
+                _render(src, raw, dpi=dpi)
             else:
                 with Image.open(src) as im:
-                    im.convert("RGB").save(dest)
-            _shrink(dest)
+                    im.convert("RGB").save(raw)
+            save_args = ({"quality": FIGURE_QUALITY, "subsampling": 0}
+                         if dest.suffix == ".jpg" else {})
+            _shrink(raw, dest=dest, **save_args)
+            raw.unlink()
             print(f"{dest.relative_to(REPO)}")
 
 

@@ -359,6 +359,14 @@ PUBLICATIONS: tuple[Publication, ...] = (
         venue="Molecular Systems Design & Engineering 6, 888–902",
         year="2021",
         url="https://doi.org/10.1039/d1me00088h",
+        figures=(
+            Figure("/papers/remdesivir-insertion/rdv-atp-insertion.jpg",
+                   "Active-site contacts for remdesivir triphosphate (top) "
+                   "and ATP (bottom) in the open and closed states of the "
+                   "SARS-CoV-2 polymerase, with the computed open-to-closed "
+                   "free energies: RDV-TP closes the active site at roughly "
+                   "half the free energy cost of the natural nucleotide."),
+        ),
     ),
     Publication(
         authors="Long C., Romero M. E., La Rocco D., Yu J.",
@@ -367,6 +375,14 @@ PUBLICATIONS: tuple[Publication, ...] = (
               "3339–3348",
         year="2021",
         url="https://doi.org/10.1016/j.csbj.2021.06.005",
+        figures=(
+            Figure("/papers/nucleotide-selectivity/polymerase-motifs.jpg",
+                   "Viral and phage polymerases side by side: the fingers, "
+                   "palm, and thumb subdomains with the conserved motifs A "
+                   "to F that surround the nucleotide insertion site, plus "
+                   "the natural nucleotides and the analogue drugs "
+                   "(remdesivir, sofosbuvir) that compete with them."),
+        ),
     ),
 )
 

@@ -3,6 +3,24 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.0] - 2026-07-27
+
+### Changed
+
+- Hard-edged pass: every corner on the site squares off. Panels and cards
+  (12 px), image tiles and the theme picker (8 px), the brand mark and nav
+  hover targets (6 px), tech chips and talk-kind badges (pills), the section
+  rules and the navbar underline all drop to a 0 px radius, and the hero
+  headshot becomes a square portrait in a square frame.
+- Buttons square off too, which needed a theme override: Flet's buttons take
+  their shape from the Material default (a stadium) and ignore a radius, so
+  `build_theme()` now sets `filled_button_theme`, `outlined_button_theme` and
+  `text_button_theme`, plus a matching dialog shape for the figure lightbox.
+- The radii now live on one knob, `theme.EDGES` ("sharp" or "soft"), backed by
+  the `_EDGE_SCALES` table: components read `theme.RADIUS_*` instead of
+  carrying their own numbers, so the whole site moves between the hard-edged
+  look and the original soft chrome in a single edit.
+
 ## [0.5.1] - 2026-07-27
 
 ### Added

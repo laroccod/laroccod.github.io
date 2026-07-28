@@ -64,7 +64,7 @@ def _talk(page: ft.Page, p: content.Presentation) -> ft.Container:
                     content=ft.Text(p.kind, size=11,
                                     color=theme.ON_ACCENT_DIM),
                     bgcolor=theme.ACCENT_DIM,
-                    border_radius=999,
+                    border_radius=theme.RADIUS_PILL,
                     padding=ft.Padding.symmetric(horizontal=8, vertical=2),
                 ),
             ],

@@ -18,7 +18,8 @@ def section_title(text: str, kicker: str = "") -> ft.Column:
     )
     controls.append(
         ft.Container(width=48, height=3, bgcolor=theme.ACCENT,
-                     border_radius=2, margin=ft.Margin.only(top=6))
+                     border_radius=theme.RADIUS_RULE,
+                     margin=ft.Margin.only(top=6))
     )
     return ft.Column(controls, spacing=4)
 
@@ -71,6 +72,6 @@ def panel(content: ft.Control, padding: int = 20) -> ft.Container:
         content=content,
         bgcolor=theme.SURFACE_CONTAINER,
         border=ft.Border.all(1, theme.OUTLINE_VARIANT),
-        border_radius=12,
+        border_radius=theme.RADIUS_PANEL,
         padding=padding,
     )

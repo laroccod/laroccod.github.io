@@ -193,6 +193,43 @@ GUTTER = 24
 SECTION_GAP = 56
 MAX_CONTENT_WIDTH = 1080
 
+# Corner-radius scale (theme-independent). Everything on the site that rounds
+# a corner reads from here, so the whole look moves between the original soft
+# chrome and a hard-edged one by changing EDGES alone.
+EDGES = "sharp"
+
+_EDGE_SCALES = {
+    "soft": {
+        "panel": 12,      # cards and panels
+        "tile": 8,        # image tiles, theme picker, nav hover targets
+        "inner": 6,       # image inside a tile, the navbar brand mark
+        "pill": 999,      # tech chips, talk-kind badges
+        "button": 20,     # filled / outlined / text buttons (≈ stadium at 40px)
+        "rule": 2,        # section-title bar, navbar underline
+        "portrait": 130,  # hero headshot (half its 260px width = a circle)
+        "frame": 136,     # the ring around it (portrait + its 4px padding + border)
+    },
+    "sharp": {
+        "panel": 0,
+        "tile": 0,
+        "inner": 0,
+        "pill": 0,
+        "button": 0,
+        "rule": 0,
+        "portrait": 0,
+        "frame": 0,
+    },
+}
+_R = _EDGE_SCALES[EDGES]
+RADIUS_PANEL = _R["panel"]
+RADIUS_TILE = _R["tile"]
+RADIUS_INNER = _R["inner"]
+RADIUS_PILL = _R["pill"]
+RADIUS_BUTTON = _R["button"]
+RADIUS_RULE = _R["rule"]
+RADIUS_PORTRAIT = _R["portrait"]
+RADIUS_PORTRAIT_FRAME = _R["frame"]
+
 # Site-wide monospace (bundled in assets/fonts, registered on page.fonts by
 # main.py). The page theme sets it as the default family, so body text,
 # kickers, chips and dates all render in it.
@@ -273,9 +310,29 @@ def theme_mode() -> ft.ThemeMode:
     return ft.ThemeMode.DARK if MODE == "dark" else ft.ThemeMode.LIGHT
 
 
+def _button_theme() -> ft.ButtonTheme:
+    """Corner shape for the Material buttons.
+
+    Flet's buttons take their shape from the Material default (a stadium),
+    which ignores the radius scale; overriding it per button kind is the only
+    way to square them off. A fresh style per call: Flet controls are
+    dataclasses and one instance cannot sit in three theme slots."""
+    return ft.ButtonTheme(
+        style=ft.ButtonStyle(
+            shape=ft.RoundedRectangleBorder(radius=RADIUS_BUTTON)
+        )
+    )
+
+
 def build_theme() -> ft.Theme:
     return ft.Theme(
         font_family=FONT_MONO,
+        filled_button_theme=_button_theme(),
+        outlined_button_theme=_button_theme(),
+        text_button_theme=_button_theme(),
+        dialog_theme=ft.DialogTheme(
+            shape=ft.RoundedRectangleBorder(radius=RADIUS_PANEL)
+        ),
         color_scheme=ft.ColorScheme(
             primary=ACCENT,
             on_primary=ON_ACCENT,

@@ -37,14 +37,15 @@ def thumb(page: ft.Page, src: str, name: str, caption: str = "",
     reads as a floating white rectangle with no edge."""
     tile = ft.Container(
         content=ft.Image(
-            src=src, height=height, fit=ft.BoxFit.CONTAIN, border_radius=6,
+            src=src, height=height, fit=ft.BoxFit.CONTAIN,
+            border_radius=theme.RADIUS_INNER,
         ),
         on_click=_lightbox(page, src, name, caption),
         tooltip=caption or "Click to enlarge",
         bgcolor=ft.Colors.WHITE if on_light else None,
         padding=6 if on_light else 0,
         border=ft.Border.all(1, theme.OUTLINE_VARIANT),
-        border_radius=8,
+        border_radius=theme.RADIUS_TILE,
         scale=ft.Scale(1.0),
         animate_scale=ft.Animation(150, ft.AnimationCurve.EASE_OUT),
     )

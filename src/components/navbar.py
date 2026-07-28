@@ -43,7 +43,7 @@ def navbar(page: ft.Page) -> tuple[ft.Container, callable]:
             height=2,
             width=0,
             bgcolor=theme.ACCENT,
-            border_radius=1,
+            border_radius=theme.RADIUS_RULE,
             animate=ft.Animation(200, ft.AnimationCurve.EASE_OUT),
         )
 
@@ -62,7 +62,7 @@ def navbar(page: ft.Page) -> tuple[ft.Container, callable]:
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             ),
             padding=ft.Padding.symmetric(horizontal=10, vertical=8),
-            border_radius=6,
+            border_radius=theme.RADIUS_INNER,
             ink=True,
             on_click=lambda e, r=route: page.navigate(r),
         )
@@ -72,7 +72,7 @@ def navbar(page: ft.Page) -> tuple[ft.Container, callable]:
         row = ft.Container(
             content=text,
             padding=ft.Padding.symmetric(horizontal=14, vertical=13),
-            border_radius=8,
+            border_radius=theme.RADIUS_TILE,
             ink=True,
             on_click=lambda e, r=route: (set_menu(False), page.navigate(r)),
         )
@@ -97,7 +97,7 @@ def navbar(page: ft.Page) -> tuple[ft.Container, callable]:
     brand_mark = ft.Container(
         width=28,
         height=28,
-        border_radius=6,
+        border_radius=theme.RADIUS_INNER,
         bgcolor=theme.ACCENT,
         alignment=ft.Alignment.CENTER,
         content=ft.Icon(ft.Icons.TERMINAL, size=18, color=theme.ON_ACCENT),
@@ -138,7 +138,7 @@ def navbar(page: ft.Page) -> tuple[ft.Container, callable]:
             text_size=13,
             dense=True,
             border_color=theme.OUTLINE,
-            border_radius=8,
+            border_radius=theme.RADIUS_TILE,
             bgcolor=theme.SURFACE_LOW,
             text_style=ft.TextStyle(color=theme.ON_SURFACE),
             leading_icon=ft.Icon(ft.Icons.PALETTE_OUTLINED, size=18,

@@ -12,25 +12,11 @@ const GITHUB_USER = "laroccod";
 /** Last known good total (2026-07-28, resolved from the API); keeps the build
  * green when the API fails. Refresh it when the build log reports a higher
  * resolved count. */
-const FALLBACK_COMMITS = 78;
-
-/** `/stats/contributors` answers 202 until GitHub has computed the stats.
- * A cold cache on a CI runner needs noticeably longer than a warm one on a
- * machine that has browsed the repos recently, and the first deploy of this
- * site fell back for exactly that reason. Repos are polled concurrently, so
- * the budget below costs at most ~30s of wall clock, not 30s per repo. */
-const STATS_RETRIES = 20;
-const STATS_RETRY_DELAY_MS = 3000;
+const FALLBACK_COMMITS = 92;
 
 interface RepoSummary {
   name: string;
   fork: boolean;
-}
-
-interface ContributorStats {
-  author: { login: string } | null;
-  /** Total commits by this author in the repo. */
-  total: number;
 }
 
 function ghFetch(url: string): Promise<Response> {
@@ -43,33 +29,43 @@ function ghFetch(url: string): Promise<Response> {
   });
 }
 
-/** `/stats/contributors` returns 202 while GitHub computes the stats in the
- * background; poll until the budget runs out before giving up on that repo.
- * Names the repo and the reason on stdout so a fallback is diagnosable from
- * the build log rather than just being a number that looks plausible. */
-async function contributorStats(
-  repo: string,
-): Promise<ContributorStats[] | null> {
-  const url = `https://api.github.com/repos/${GITHUB_USER}/${repo}/stats/contributors`;
-  for (let attempt = 0; attempt < STATS_RETRIES; attempt++) {
-    const res = await ghFetch(url);
-    if (res.status === 200) {
-      const stats: ContributorStats[] = await res.json();
-      // A 200 with an empty body means "computed, but nothing to report",
-      // which for a repo the user has committed to means it is still warming.
-      if (stats.length > 0) return stats;
-      if (attempt === STATS_RETRIES - 1) {
-        console.log(`[github] ${repo}: empty stats after ${attempt + 1} tries`);
-        return null;
-      }
-    } else if (res.status !== 202) {
-      console.log(`[github] ${repo}: HTTP ${res.status}, giving up`);
-      return null;
-    }
-    await new Promise((resolve) => setTimeout(resolve, STATS_RETRY_DELAY_MS));
+/** Commits authored by GITHUB_USER on one repo's default branch.
+ *
+ * Asks for a single commit and reads the pagination Link header, whose last
+ * page number equals the commit count. This answers immediately, which is why
+ * it replaced `/stats/contributors`: that endpoint returns 202 while GitHub
+ * recomputes in the background, and a push invalidates the pushed repo's
+ * stats, so a build triggered by a push to this very repo always found its own
+ * stats unavailable no matter how long it waited. Polling long enough to
+ * matter also blew past Next's 60s per-page build timeout. */
+async function commitsInRepo(repo: string): Promise<number | null> {
+  const url =
+    `https://api.github.com/repos/${GITHUB_USER}/${repo}/commits` +
+    `?author=${GITHUB_USER}&per_page=1`;
+  // Author-filtered commit queries are expensive for GitHub to serve, and
+  // firing them off concurrently reliably drew 504s. They are issued one at a
+  // time (see getCommitCount) and retried with a growing pause on the
+  // gateway errors and rate-limit responses that remain.
+  let res = await ghFetch(url);
+  for (
+    let attempt = 0;
+    attempt < 3 && (res.status >= 500 || res.status === 403 || res.status === 429);
+    attempt++
+  ) {
+    await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt));
+    res = await ghFetch(url);
   }
-  console.log(`[github] ${repo}: still computing after ${STATS_RETRIES} tries`);
-  return null;
+  // 409 is an empty repository, which is a real answer of zero.
+  if (res.status === 409) return 0;
+  if (!res.ok) {
+    console.log(`[github] ${repo}: HTTP ${res.status}`);
+    return null;
+  }
+  const last = res.headers.get("link")?.match(/[?&]page=(\d+)>;\s*rel="last"/);
+  if (last) return Number(last[1]);
+  // No Link header means the result fits on one page: zero or one commit.
+  const commits: unknown = await res.json();
+  return Array.isArray(commits) ? commits.length : null;
 }
 
 /** The fallback is deliberately plausible, so a failed fetch is invisible on
@@ -88,27 +84,28 @@ export async function getCommitCount(): Promise<number> {
       `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100`,
     );
     if (!res.ok) {
-      return report(FALLBACK_COMMITS, "fallback", `: repo list HTTP ${res.status}`);
+      return report(
+        FALLBACK_COMMITS,
+        "fallback",
+        `: repo list HTTP ${res.status}`,
+      );
     }
     const repos: RepoSummary[] = await res.json();
-    const perRepo = await Promise.all(
-      repos.filter((r) => !r.fork).map((r) => contributorStats(r.name)),
-    );
-    let total = 0;
-    for (const contributors of perRepo) {
-      for (const c of contributors ?? []) {
-        if (c.author?.login !== GITHUB_USER) continue;
-        total += c.total;
-      }
+    // Sequential on purpose: concurrent author-filtered queries draw 504s.
+    // A handful of repos costs a couple of seconds.
+    const perRepo: (number | null)[] = [];
+    for (const repo of repos.filter((r) => !r.fork)) {
+      perRepo.push(await commitsInRepo(repo.name));
     }
-    // Incomplete data (a repo timed out, or an empty sum) must never
-    // undercount below the last known total.
-    const missing = perRepo.filter((s) => s === null).length;
+    const missing = perRepo.filter((n) => n === null).length;
+    const total = perRepo.reduce((sum: number, n) => sum + (n ?? 0), 0);
+    // Incomplete data (a repo errored, or an empty sum) must never undercount
+    // below the last known total.
     if (missing > 0 || total === 0) {
       return report(
         Math.max(total, FALLBACK_COMMITS),
         "fallback",
-        `: ${missing} of ${perRepo.length} repos returned no stats, partial total ${total}`,
+        `: ${missing} of ${perRepo.length} repos did not answer, partial total ${total}`,
       );
     }
     return report(total, "api");

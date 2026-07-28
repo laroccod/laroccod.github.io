@@ -34,7 +34,7 @@ export const FIG_ATLAS_FASER: Figure = {
 export const NAME = "Daniel La Rocco";
 export const TITLE = "Physics Ph.D. · Scientific Software Developer";
 export const LOCATION = "Orange County, CA";
-export const EMAIL = "laroccod@uci.edu";
+export const EMAIL = "laroccod2025@gmail.com";
 export const GITHUB = "https://github.com/laroccod";
 
 export const TAGLINE =

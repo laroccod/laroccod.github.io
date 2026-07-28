@@ -14,9 +14,9 @@ All notable changes to the portfolio site. Format follows
 
 ### Changed
 
-- A publication card holding a single figure renders it at 300 px tall rather
-  than the 135 px the multi-figure strips use, since it has the whole row to
-  itself, and its caption line reads "Figure from the paper."
+- A publication card holding a single figure keeps the same 135 px thumbnail
+  height as the multi-figure strips, and its caption line reads "Select
+  figure. Click to enlarge."
 - `tools/build_media.py` can encode figures as JPEG: an output name ending in
   ".jpg" goes out as JPEG (quality 85) instead of PNG. The two new figures are
   rendered molecular structures rather than line-art plots, so PNG cost 1.6 MB

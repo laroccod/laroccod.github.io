@@ -13,11 +13,9 @@ from data import content
 # Thumbnail height for the figure strips. The widest card (four figures whose
 # aspect ratios sum to ~6.2) then measures ~930 px, inside the ~996 px of
 # content column the panel leaves, so the row fits without scrolling.
+# Every card uses it, single-figure ones included: a taller thumbnail there
+# fits the row fine but reads as a banner next to the plot strips.
 FIGURE_HEIGHT = 135
-# A card carrying a single figure has the whole row to itself, and the
-# biophysics papers each ship one dense multi-panel figure that is unreadable
-# at 135 px. Even the widest of them (aspect 1.7) stays well inside the row.
-FIGURE_HEIGHT_SOLO = 300
 
 
 def _strip_caption(lead: str, single: bool = False) -> ft.Text:
@@ -47,14 +45,12 @@ def _publication(page: ft.Page, pub: content.Publication) -> ft.Container:
         rows.append(
             image_strip(page, [
                 thumb(page, f.src, pub.title, caption=f.caption,
-                      height=FIGURE_HEIGHT_SOLO if solo else FIGURE_HEIGHT,
-                      on_light=True)
+                      height=FIGURE_HEIGHT, on_light=True)
                 for f in pub.figures
             ])
         )
         rows.append(_strip_caption(
-            "Figure from the paper." if solo else "Select figures.",
-            single=solo))
+            "Select figure." if solo else "Select figures.", single=solo))
     return panel(ft.Column(rows, spacing=8), padding=18)
 
 

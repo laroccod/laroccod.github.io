@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { NAME, SUMMARY, TITLE } from "@/data/content";
+import { ogMeta } from "@/lib/og-cards";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -29,6 +30,8 @@ export const metadata: Metadata = {
     template: `%s · ${NAME}`,
   },
   description: SUMMARY,
+  // Inherited by every route that does not set its own card.
+  ...ogMeta("home"),
 };
 
 export default function RootLayout({

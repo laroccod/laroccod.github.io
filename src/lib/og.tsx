@@ -1,14 +1,13 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { OG_SIZE } from "./og-cards";
 
 /** Shared Open Graph card in the site's BFCM terminal style: dark panel,
  * hairline border, gold corner ticks, Space Mono throughout. Colors are
  * the dark-theme tokens from globals.css (OG images can't read CSS vars,
  * and the dark theme is the site default). ASCII-only text: satori only
  * has the glyphs in the two font files loaded below. */
-
-export const OG_SIZE = { width: 1200, height: 630 };
 
 const BG = "#050505";
 const PANEL = "#0c0a10";

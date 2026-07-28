@@ -6,10 +6,12 @@ import { StatusChip } from "@/components/ui/StatusChip";
 import { TerminalCard } from "@/components/ui/TerminalCard";
 import { TypedText } from "@/components/ui/TypedText";
 import { CONTACT_LINKS, EMAIL, LOCATION } from "@/data/content";
+import { ogMeta } from "@/lib/og-cards";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Email, GitHub, LinkedIn, and ORCID.",
+  ...ogMeta("contact"),
 };
 
 /** Decorative ping replies staged in after the typed command finishes. */

@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PROJECTS } from "@/data/projects";
+import { ogMeta } from "@/lib/og-cards";
 
 export const metadata: Metadata = {
   title: "Projects",
   description:
     "Open-source scientific software: labforge, FORESEE Lab, HNLCalc, and " +
     "the FORESEE Monte Carlo framework.",
+  ...ogMeta("projects"),
 };
 
 export default function ProjectsPage() {

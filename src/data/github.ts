@@ -12,8 +12,13 @@ const GITHUB_USER = "laroccod";
 /** Last known good total (2026-07); keeps the build green when the API fails. */
 const FALLBACK_COMMITS = 76;
 
-const STATS_RETRIES = 5;
-const STATS_RETRY_DELAY_MS = 2000;
+/** `/stats/contributors` answers 202 until GitHub has computed the stats.
+ * A cold cache on a CI runner needs noticeably longer than a warm one on a
+ * machine that has browsed the repos recently, and the first deploy of this
+ * site fell back for exactly that reason. Repos are polled concurrently, so
+ * the budget below costs at most ~30s of wall clock, not 30s per repo. */
+const STATS_RETRIES = 10;
+const STATS_RETRY_DELAY_MS = 3000;
 
 interface RepoSummary {
   name: string;
@@ -51,12 +56,24 @@ async function contributorStats(
   return null;
 }
 
+/** The fallback is deliberately plausible, so a failed fetch is invisible on
+ * the page. Every outcome is therefore announced on stdout, which is the only
+ * way to tell a real count that happens to equal FALLBACK_COMMITS from an
+ * actual fallback. Grep the build log (or the Actions run) for "[github]". */
+function report(count: number, source: "api" | "fallback", why = ""): number {
+  const detail = source === "api" ? "resolved from the API" : `FELL BACK${why}`;
+  console.log(`[github] commit count ${count} (${detail})`);
+  return count;
+}
+
 export async function getCommitCount(): Promise<number> {
   try {
     const res = await ghFetch(
       `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100`,
     );
-    if (!res.ok) return FALLBACK_COMMITS;
+    if (!res.ok) {
+      return report(FALLBACK_COMMITS, "fallback", `: repo list HTTP ${res.status}`);
+    }
     const repos: RepoSummary[] = await res.json();
     const perRepo = await Promise.all(
       repos.filter((r) => !r.fork).map((r) => contributorStats(r.name)),
@@ -70,12 +87,18 @@ export async function getCommitCount(): Promise<number> {
     }
     // Incomplete data (a repo timed out, or an empty sum) must never
     // undercount below the last known total.
-    if (perRepo.some((s) => s === null) || total === 0) {
-      return Math.max(total, FALLBACK_COMMITS);
+    const missing = perRepo.filter((s) => s === null).length;
+    if (missing > 0 || total === 0) {
+      return report(
+        Math.max(total, FALLBACK_COMMITS),
+        "fallback",
+        `: ${missing} of ${perRepo.length} repos returned no stats, partial total ${total}`,
+      );
     }
-    return total;
-  } catch {
-    return FALLBACK_COMMITS;
+    return report(total, "api");
+  } catch (err) {
+    const why = err instanceof Error ? `: ${err.message}` : "";
+    return report(FALLBACK_COMMITS, "fallback", why);
   }
 }
 

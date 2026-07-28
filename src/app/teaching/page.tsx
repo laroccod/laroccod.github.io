@@ -11,12 +11,14 @@ import {
   TEACHING_ROLES,
 } from "@/data/content";
 import { TEACHING_STATS } from "@/data/stats";
+import { ogMeta } from "@/lib/og-cards";
 
 export const metadata: Metadata = {
   title: "Teaching",
   description:
     "Teaching assistant and tutoring experience across 11 physics courses, " +
     "plus mentoring and outreach.",
+  ...ogMeta("teaching"),
 };
 
 export default function TeachingPage() {

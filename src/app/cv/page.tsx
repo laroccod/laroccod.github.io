@@ -13,12 +13,14 @@ import {
   SUMMARY,
   TEACHING,
 } from "@/data/content";
+import { ogMeta } from "@/lib/og-cards";
 
 export const metadata: Metadata = {
   title: "CV",
   description:
     "Curriculum vitae: research experience, education, technical skills, " +
     "publications, talks, and teaching.",
+  ...ogMeta("cv"),
 };
 
 export default function CvPage() {

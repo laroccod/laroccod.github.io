@@ -3,12 +3,14 @@ import { PublicationCard } from "@/components/cards/PublicationCard";
 import { TalkCard } from "@/components/cards/TalkCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PRESENTATIONS, PUBLICATIONS } from "@/data/content";
+import { ogMeta } from "@/lib/og-cards";
 
 export const metadata: Metadata = {
   title: "Research",
   description:
     "Peer-reviewed publications and conference talks: heavy neutral lepton " +
     "phenomenology at forward LHC experiments, and computational biophysics.",
+  ...ogMeta("research"),
 };
 
 export default function PapersPage() {

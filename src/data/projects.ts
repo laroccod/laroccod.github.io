@@ -9,15 +9,18 @@ export const PROJECTS: Project[] = [
   {
     slug: "labforge",
     name: "labforge",
-    tagline: "Wrap plain Python functions into a small scientific app.",
+    tagline: "Turn plain Python scripts into small scientific web apps.",
     description:
       "A Python framework I designed and published that turns plain " +
       "functions (a simulation worker, matplotlib visualizations, " +
       "analysis routines, and LaTeX theory notes) into a polished " +
-      "4-page scientific app (Theory → Simulation → Visualization → " +
-      "Analysis) with auto-generated parameter controls, a parameter-" +
-      "scan engine, and 8 built-in themes.",
-    tech: ["Python", "Flet", "Matplotlib", "PyPI package"],
+      "four-section scientific web app (Theory → Simulation → " +
+      "Visualization → Analysis) with auto-generated parameter controls, " +
+      "a parameter-scan engine, and three terminal-dashboard themes. A " +
+      "lab serves itself over FastAPI at localhost and runs as a browser " +
+      "tab: no HTML, no JavaScript, and no LaTeX toolchain, since the " +
+      "equations are typeset in the browser.",
+    tech: ["Python", "FastAPI", "Matplotlib", "KaTeX", "PyPI package"],
     role: "Author & maintainer",
     githubUrl: "https://github.com/laroccod/labforge",
     pypiUrl: "https://pypi.org/project/labforge/",
@@ -28,8 +31,8 @@ export const PROJECTS: Project[] = [
     screenshots: [
       "/projects/labforge/screenshot.png",
       "/projects/labforge/multi_worker.png",
-      "/projects/labforge/theme_instrument.png",
-      "/projects/labforge/theme_lavender.png",
+      "/projects/labforge/web_theme_dark.png",
+      "/projects/labforge/web_theme_matrix.png",
     ],
     featured: true,
   },

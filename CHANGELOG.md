@@ -3,6 +3,22 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.2] - 2026-07-28
+
+### Changed
+
+- The labforge project card follows the framework's rewrite off Flet. It now
+  serves itself over FastAPI at localhost as one four-section page rather than
+  a four-page Flet app, typesets equations with KaTeX in the browser, and
+  ships three themes instead of eight; the tech chips read Python, FastAPI,
+  Matplotlib, KaTeX, PyPI package.
+- labforge's screenshot strip was re-pulled from the upstream README's
+  `assets/`. The app shot and the multi-worker shot both changed, and the
+  instrument and lavender theme shots gave way to the dark and matrix web
+  themes, those palettes no longer existing.
+- `package.json` version now tracks this changelog; it had been left at
+  0.1.0 since the Flet era.
+
 ## [1.0.1] - 2026-07-28
 
 Post-launch fixes, all found by watching the first real deploys.

@@ -16,8 +16,8 @@ interface TypedTextProps {
 /** Terminal typewriter: types `text` with a blinking block cursor once the
  * element scrolls into view. A visually-hidden copy of the full text
  * reserves the final layout (no shift) and keeps the copy available to
- * screen readers and crawlers at all times. Renders the finished text
- * immediately under prefers-reduced-motion. */
+ * screen readers and crawlers at all times. Under prefers-reduced-motion the
+ * finished text appears at once instead of typing. */
 export function TypedText({
   text,
   speed = 14,
@@ -32,16 +32,19 @@ export function TypedText({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setCount(text.length);
-      return;
-    }
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     let timer = 0;
     let raf = 0;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
+        if (reduced) {
+          setCount(text.length);
+          return;
+        }
         timer = window.setTimeout(() => {
           // Time-based, not chained timeouts: the visible count derives
           // from elapsed time, so total duration is exact and scheduling

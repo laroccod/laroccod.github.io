@@ -42,7 +42,7 @@ export default async function HomePage() {
         <div className="relative flex flex-col-reverse items-start gap-8 sm:flex-row sm:items-center sm:gap-14">
           <div className="max-w-xl">
             <p className="kicker !text-accent">
-              ▸▸ {LOCATION} <span aria-hidden>//</span> ONLINE
+              ▸▸ {LOCATION} <span aria-hidden>{"//"}</span> ONLINE
             </p>
             <h1 className="mt-3 text-4xl font-bold leading-tight sm:text-[52px]">
               <Wordmark text={NAME} />

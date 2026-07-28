@@ -14,7 +14,7 @@ export function SectionHeader({ index, kicker, title }: SectionHeaderProps) {
         <span className="text-accent">
           SECTION {String(index).padStart(2, "0")}
         </span>{" "}
-        <span aria-hidden>//</span> {kicker}
+        <span aria-hidden>{"//"}</span> {kicker}
       </p>
       <h2 className="mt-2 text-[26px] font-bold leading-tight sm:text-3xl">
         {title}

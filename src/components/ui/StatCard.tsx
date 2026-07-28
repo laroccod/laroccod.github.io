@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import type { Stat } from "@/data/types";
 
 /** Count from 0 to target over ~1s once the element scrolls into view.
- * Skips straight to the target under prefers-reduced-motion. */
+ * Jumps straight to the target under prefers-reduced-motion. The reduced
+ * check happens inside the observer callback rather than the effect body so
+ * no state is set synchronously during the effect. */
 function useCountUp(target: number) {
   const ref = useRef<HTMLSpanElement>(null);
   const [value, setValue] = useState(0);
@@ -13,15 +15,18 @@ function useCountUp(target: number) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setValue(target);
-      return;
-    }
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     let raf = 0;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
+        if (reduced) {
+          setValue(target);
+          return;
+        }
         const start = performance.now();
         const duration = 1400;
         const tick = (now: number) => {

@@ -12,7 +12,6 @@ export function Wordmark({ text, className }: WordmarkProps) {
       <span aria-hidden>
         {Array.from(text).map((letter, i) => (
           <span
-            // eslint-disable-next-line react/no-array-index-key
             key={i}
             className="wordmark-letter"
             style={{ "--letter-index": i } as React.CSSProperties}

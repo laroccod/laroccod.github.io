@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useHydrated } from "@/lib/use-hydrated";
 import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS = [
@@ -19,12 +20,13 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   // The palette shortcut is ⌘K on Apple hardware and Ctrl+K everywhere else
   // (CommandPalette accepts either). The server cannot know which, so the
-  // label is resolved after mount and gated like ThemeToggle's.
-  const [shortcut, setShortcut] = useState<string | null>(null);
-  useEffect(() => {
-    const apple = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    setShortcut(apple ? "⌘k" : "ctrl k");
-  }, []);
+  // label waits for hydration, like ThemeToggle's.
+  const hydrated = useHydrated();
+  const shortcut = hydrated
+    ? /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent)
+      ? "⌘k"
+      : "ctrl k"
+    : null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur-sm">

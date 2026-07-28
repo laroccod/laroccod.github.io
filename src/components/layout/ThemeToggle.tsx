@@ -1,14 +1,13 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useHydrated } from "@/lib/use-hydrated";
 
 const CYCLE = ["dark", "light", "matrix"] as const;
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
 
   const current = CYCLE.indexOf(resolvedTheme as (typeof CYCLE)[number]);
   const next = CYCLE[(current + 1) % CYCLE.length] ?? "light";

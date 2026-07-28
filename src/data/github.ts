@@ -9,15 +9,17 @@ import type { Stat } from "./types";
 
 const GITHUB_USER = "laroccod";
 
-/** Last known good total (2026-07); keeps the build green when the API fails. */
-const FALLBACK_COMMITS = 76;
+/** Last known good total (2026-07-28, resolved from the API); keeps the build
+ * green when the API fails. Refresh it when the build log reports a higher
+ * resolved count. */
+const FALLBACK_COMMITS = 78;
 
 /** `/stats/contributors` answers 202 until GitHub has computed the stats.
  * A cold cache on a CI runner needs noticeably longer than a warm one on a
  * machine that has browsed the repos recently, and the first deploy of this
  * site fell back for exactly that reason. Repos are polled concurrently, so
  * the budget below costs at most ~30s of wall clock, not 30s per repo. */
-const STATS_RETRIES = 10;
+const STATS_RETRIES = 20;
 const STATS_RETRY_DELAY_MS = 3000;
 
 interface RepoSummary {
@@ -42,17 +44,31 @@ function ghFetch(url: string): Promise<Response> {
 }
 
 /** `/stats/contributors` returns 202 while GitHub computes the stats in the
- * background; poll a few times before giving up on that repo. */
+ * background; poll until the budget runs out before giving up on that repo.
+ * Names the repo and the reason on stdout so a fallback is diagnosable from
+ * the build log rather than just being a number that looks plausible. */
 async function contributorStats(
   repo: string,
 ): Promise<ContributorStats[] | null> {
   const url = `https://api.github.com/repos/${GITHUB_USER}/${repo}/stats/contributors`;
   for (let attempt = 0; attempt < STATS_RETRIES; attempt++) {
     const res = await ghFetch(url);
-    if (res.status === 200) return res.json();
-    if (res.status !== 202) return null;
+    if (res.status === 200) {
+      const stats: ContributorStats[] = await res.json();
+      // A 200 with an empty body means "computed, but nothing to report",
+      // which for a repo the user has committed to means it is still warming.
+      if (stats.length > 0) return stats;
+      if (attempt === STATS_RETRIES - 1) {
+        console.log(`[github] ${repo}: empty stats after ${attempt + 1} tries`);
+        return null;
+      }
+    } else if (res.status !== 202) {
+      console.log(`[github] ${repo}: HTTP ${res.status}, giving up`);
+      return null;
+    }
     await new Promise((resolve) => setTimeout(resolve, STATS_RETRY_DELAY_MS));
   }
+  console.log(`[github] ${repo}: still computing after ${STATS_RETRIES} tries`);
   return null;
 }
 

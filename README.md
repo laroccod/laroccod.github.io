@@ -36,8 +36,9 @@ npm run lint    # eslint
 | `src/data/stats.ts` | Big-number stats, derived from the data arrays so they never drift. |
 | `src/data/github.ts` | Build-time GitHub tracker for the "commits" hero stat, with a baked-in fallback count. |
 | `src/app/globals.css` | Design tokens for all three themes, terminal card styles, animations. |
-| `src/app/*/page.tsx` | The six routes: `/`, `/cv`, `/papers` (nav label "Research"), `/teaching`, `/projects`, `/contact` (`/presentations` redirects to `/papers`). `not-found.tsx` is the SIGNAL LOST 404. |
-| `src/app/*/opengraph-image.tsx` | Per-route OG cards in the site style, rendered at build time via `src/lib/og.tsx`. |
+| `src/app/*/page.tsx` | The six routes: `/`, `/cv`, `/papers` (nav label "Research"), `/teaching`, `/projects`, `/contact` (`/presentations` meta-refreshes to `/papers`). `not-found.tsx` is the SIGNAL LOST 404. |
+| `src/app/og/*.png/route.tsx` | Per-route OG cards, rendered at build time via `src/lib/og.tsx`. Route handlers rather than Next's `opengraph-image` convention, so the emitted file keeps a `.png` extension (see Deployment). |
+| `src/lib/` | `site.ts` (canonical origin), `og.tsx` (card renderer), `og-cards.ts` (card copy, alt text, and the `ogMeta()` helper pages use), `use-hydrated.ts` (SSR-safe "am I on the client yet" hook). |
 | `src/components/` | `layout/` (navbar, footer, theme toggle, command palette), `ui/` (cards, stats, lightbox, disclosures, typewriter, scroll reveal, status chips), `hero/` (wordmark, matrix rain, thesis diagram), `cards/` (publication, talk, project, contact). |
 | `public/` | Headshot, paper figures, talk PDFs and slide previews, project screenshots (mirrors of each project repo's README assets). |
 
@@ -71,14 +72,29 @@ Pages on every push to `main` (plus a weekly cron, so the build-time commit
 stat stays current). Pages is served from the Actions artifact, not a branch.
 
 `next.config.ts` sets `output: "export"`, so `npm run build` writes a fully
-static site to `out/`. That mode has three consequences worth remembering:
+static site to `out/`. That mode has four consequences worth remembering:
 
 - `images.unoptimized` is required, since the default `next/image` loader
   needs a server.
-- Every metadata route (`opengraph-image.tsx`, `sitemap.ts`, `robots.ts`)
-  must declare `export const dynamic = "force-static"` or the build fails.
+- Every generated route (the OG cards, `sitemap.ts`, `robots.ts`) must declare
+  `export const dynamic = "force-static"` or the build fails.
 - `trailingSlash: true` emits `cv/index.html` rather than `cv.html`, which is
   what a plain static host expects.
+- There is no server to issue a redirect, so `redirect()` bakes an error shell
+  into the HTML. `/presentations` uses a meta refresh instead.
+
+OG cards are route handlers under `src/app/og/`, not `opengraph-image.tsx`
+files. The file convention emits an extensionless file, and GitHub Pages types
+responses by extension, so those cards went out as `application/octet-stream`
+and crawlers could refuse them. A route segment ending in `.png` keeps the
+cards generated at build time while landing on disk with an extension a static
+host understands. Pages opt in with `ogMeta(slug)` from `src/lib/og-cards.ts`.
+
+The build resolves the "commits" hero stat from the GitHub API and logs the
+outcome as `[github] ...`, so an Actions run always states whether the number
+is real or the baked-in fallback. See `src/data/github.ts` for why the
+`/stats/contributors` endpoint cannot be used and why the queries are
+sequential.
 
 The canonical origin lives in `src/lib/site.ts`; moving to a custom domain is
 a one-line change there (plus a `CNAME` file and DNS records).

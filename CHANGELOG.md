@@ -3,6 +3,38 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.1] - 2026-07-28
+
+Post-launch fixes, all found by watching the first real deploys.
+
+### Fixed
+
+- Open Graph cards were served as `application/octet-stream`, which crawlers
+  can refuse, because Next's `opengraph-image` convention emits a file with no
+  extension and GitHub Pages types responses by extension. The cards are now
+  route handlers at `/og/<slug>.png`, still generated at build time but with
+  an extension a static host understands. Twitter cards get an image too,
+  which the old convention was not providing.
+- The commit stat silently showed its fallback on every deploy. GitHub's
+  `/stats/contributors` answers 202 while recomputing, and a push invalidates
+  the pushed repo's stats, so the build that push triggers always found this
+  repo's own stats unavailable. Counting now reads the pagination header of a
+  one-commit query, which answers immediately, and the build log reports
+  whether the number is real or the fallback.
+- `/presentations` returned an error shell. `redirect()` needs a server, so
+  the page uses a meta refresh and is no longer listed in the sitemap.
+- The contact page's uplink animation kept pinging the old email host after
+  the address changed; the replies now derive their host from `EMAIL`.
+- Cleared the eslint backlog: no state set synchronously inside an effect, no
+  `//` text nodes parsed as JSX comments.
+
+### Changed
+
+- Contact email is now laroccod2025@gmail.com.
+- The command palette hint reads `ctrl k` on Windows and Linux instead of
+  showing a Mac-only glyph. The shortcut itself always accepted both.
+- Deployment actions moved off the versions pinned to the deprecated Node 20.
+
 ## [1.0.0] - 2026-07-28
 
 ### Changed

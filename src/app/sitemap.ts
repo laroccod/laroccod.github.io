@@ -1,14 +1,15 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 
-/** Trailing slashes match the exported URLs (next.config.ts trailingSlash). */
+/** Trailing slashes match the exported URLs (next.config.ts trailingSlash).
+ * /presentations is deliberately absent: it only redirects to /papers, and a
+ * sitemap should list canonical destinations rather than the way in. */
 const PATHS = [
   "/",
   "/cv/",
   "/papers/",
   "/teaching/",
   "/projects/",
-  "/presentations/",
   "/contact/",
 ];
 

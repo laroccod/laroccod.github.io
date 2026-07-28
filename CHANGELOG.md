@@ -3,6 +3,36 @@
 All notable changes to the portfolio site. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.0] - 2026-07-28
+
+### Changed
+
+- The site is now a Next.js 16 application (App Router, React 19, TypeScript,
+  Tailwind v4) in place of the Flet/Flutter build. All content carried over
+  unchanged, ported from the Python modules into typed ones in `src/data/`.
+- Deployment builds a static export (`output: "export"`) and publishes `out/`
+  to GitHub Pages. The workflow also runs weekly, so the build-time commit
+  stat stays current without a push.
+- URLs are real paths (`/papers/`) rather than hash routes (`/#/papers`), so
+  links into the site are now crawlable. Old hash links land on the homepage.
+- The default theme is matrix (phosphor green). The cycle is unchanged:
+  dark, light (UCI blue), matrix.
+
+### Added
+
+- A command palette (⌘K, Ctrl+K, or `/`) over navigation and quick actions,
+  with the modifier label resolved per platform.
+- Per-route Open Graph cards, a sitemap, a robots policy, and a 404 page.
+- A live "commits on GitHub" stat resolved at build time from the GitHub API,
+  falling back to a baked-in count when the API is unreachable.
+- Terminal typewriter intro, scroll-reveal card flicker, and an SVG schematic
+  of the thesis signal topology.
+
+### Removed
+
+- The Flet application and its Python tooling (`src/`, `tools/`,
+  `pyproject.toml`). Its history remains in this repo through c19f315.
+
 ## [0.6.0] - 2026-07-27
 
 ### Changed

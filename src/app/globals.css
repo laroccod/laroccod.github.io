@@ -1,0 +1,560 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens: dark BFCM terminal-dashboard theme (default),       */
+/* light "paper" variant under html.light.                            */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --bg: #050505;
+  --bg-elevated: #0c0a10;
+  --surface-high: #14101c;
+  --line: #241a33;
+  --line-bright: #43205f;
+  --ink: #f6eefc;
+  --muted: #a794be;
+  --accent: #faeb92;
+  --accent-dim: #3e3418;
+  --accent-glow: rgba(250, 235, 146, 0.45);
+  --secondary: #b45cff;
+  --grid-dot: rgba(246, 238, 252, 0.06);
+  --mat: #ffffff;
+}
+
+html.light {
+  --bg: #f4f2ec;
+  --bg-elevated: #faf8f3;
+  --surface-high: #ffffff;
+  --line: #cfd4d8;
+  --line-bright: #9fb1c4;
+  --ink: #1d232a;
+  --muted: #5c6a76;
+  /* UCI blue accent, with darkened UCI gold as the counterpoint */
+  --accent: #0064a4;
+  --accent-dim: #d3e4f0;
+  --accent-glow: rgba(0, 100, 164, 0);
+  --secondary: #8f6b00;
+  --grid-dot: rgba(29, 35, 42, 0.08);
+  --mat: #ffffff;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--bg-elevated);
+  --color-surface: var(--surface-high);
+  --color-line: var(--line);
+  --color-line-bright: var(--line-bright);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-secondary: var(--secondary);
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+  --font-rain: var(--font-roboto-mono), ui-monospace, monospace;
+}
+
+html.matrix {
+  --bg: #010401;
+  --bg-elevated: #03120a;
+  --surface-high: #071c0f;
+  --line: #123a20;
+  --line-bright: #1f6b38;
+  --ink: #d4f7dc;
+  --muted: #6faf7f;
+  --accent: #3bff6f;
+  --accent-dim: #0c3318;
+  --accent-glow: rgba(59, 255, 111, 0.4);
+  --secondary: #b7ff2e;
+  --grid-dot: rgba(212, 247, 220, 0.06);
+  --mat: #ffffff;
+}
+
+html {
+  color-scheme: dark;
+}
+html.light {
+  color-scheme: light;
+}
+html.matrix {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.65;
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared component styles                                            */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* 12px uppercase kicker used across headers, chips, labels */
+  .kicker {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Terminal card: hairline border, square corners, corner tick marks */
+  .terminal-card {
+    position: relative;
+    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .terminal-card:hover {
+    border-color: var(--line-bright);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.35), 0 0 12px var(--accent-glow);
+  }
+  .terminal-card::before,
+  .terminal-card::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .terminal-card::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+  .terminal-card::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 1px 1px 0;
+  }
+
+  /* Glowing stat numerals */
+  .stat-numeral {
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 24px var(--accent-glow);
+    line-height: 1;
+  }
+
+  /* Fading horizontal rule, terminal-style */
+  .rule-fade {
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), var(--line) 40%, transparent);
+    opacity: 0.8;
+  }
+
+  /* White mat behind paper figures (black-on-white line art on dark bg) */
+  .figure-mat {
+    background: var(--mat);
+    padding: 6px;
+  }
+
+  /* Themed frame around a matted figure: hairline border and accent
+     corner ticks (same language as .terminal-card), with a panel-colored
+     reveal between the border and the white mat. */
+  .figure-frame {
+    position: relative;
+    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    padding: 4px;
+    transition: border-color 150ms ease, box-shadow 150ms ease,
+      transform 150ms ease;
+  }
+  .figure-frame::before,
+  .figure-frame::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .figure-frame::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+  .figure-frame::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 1px 1px 0;
+  }
+  /* Interactive frames (figure-strip thumbs) glow like cards on hover */
+  button.figure-frame:hover,
+  a.figure-frame:hover {
+    border-color: var(--line-bright);
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Wordmark: per-letter wave + glint sweep                             */
+/* ------------------------------------------------------------------ */
+
+@keyframes letter-wave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-0.14em);
+  }
+  60% {
+    transform: translateY(0.04em);
+  }
+}
+
+@keyframes letter-glint {
+  0%,
+  100% {
+    color: inherit;
+    text-shadow: none;
+  }
+  50% {
+    color: var(--accent);
+    text-shadow: 0 0 18px var(--accent-glow);
+  }
+}
+
+.wordmark-letter {
+  display: inline-block;
+  animation:
+    letter-wave 1.1s ease-in-out 1 both,
+    letter-glint 0.8s ease-in-out 1 both;
+  animation-delay:
+    calc(var(--letter-index) * 55ms),
+    calc(0.9s + var(--letter-index) * 45ms);
+}
+
+.wordmark:hover .wordmark-letter {
+  animation:
+    letter-wave 1.1s ease-in-out 1 both,
+    letter-glint 0.8s ease-in-out 1 both;
+  animation-delay:
+    calc(var(--letter-index) * 55ms),
+    calc(var(--letter-index) * 45ms);
+}
+
+/* ------------------------------------------------------------------ */
+/* Typed text: terminal typewriter with blinking block cursor          */
+/* ------------------------------------------------------------------ */
+
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.typed-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 1px;
+  /* nudged just below the baseline so its bottom lines up with the period */
+  vertical-align: -0.1em;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  animation: cursor-blink 1.06s steps(1) infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Navbar brand: prompt glyph + block cursor that wakes on hover       */
+/* ------------------------------------------------------------------ */
+
+.brand-prompt {
+  transition: transform 0.2s ease;
+}
+
+.brand:hover .brand-prompt {
+  transform: translateX(3px);
+}
+
+.brand-cursor {
+  width: 0.55em;
+  height: 1em;
+  margin-left: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.brand:hover .brand-cursor {
+  opacity: 1;
+  animation: cursor-blink 1.06s steps(1) infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll reveal: cards flicker in like a CRT redraw                   */
+/* ------------------------------------------------------------------ */
+
+.reveal-pending {
+  opacity: 0;
+}
+
+@keyframes card-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  30% {
+    opacity: 0.45;
+    transform: translateY(4px);
+  }
+  45% {
+    opacity: 0.15;
+    transform: translateY(4px);
+  }
+  60% {
+    opacity: 0.75;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-in {
+  animation: card-reveal 380ms linear both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Status dot: pulsing square terminal LED (inherits currentColor)     */
+/* ------------------------------------------------------------------ */
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 8px currentColor;
+  }
+  50% {
+    opacity: 0.3;
+    box-shadow: none;
+  }
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+  animation: status-pulse 1.6s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* 404 glitch: occasional sliced RGB-split bursts on the numeral       */
+/* ------------------------------------------------------------------ */
+
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0.85;
+  pointer-events: none;
+  clip-path: inset(0 0 100% 0);
+}
+.glitch::before {
+  color: var(--secondary);
+  animation: glitch-slice-a 3.1s steps(1) infinite;
+}
+.glitch::after {
+  color: var(--accent);
+  animation: glitch-slice-b 2.9s steps(1) infinite;
+}
+
+@keyframes glitch-slice-a {
+  0%,
+  91% {
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+  92% {
+    transform: translate(-7px, 2px);
+    clip-path: inset(12% 0 52% 0);
+  }
+  95% {
+    transform: translate(5px, -1px);
+    clip-path: inset(58% 0 8% 0);
+  }
+  98%,
+  100% {
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes glitch-slice-b {
+  0%,
+  89% {
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+  90% {
+    transform: translate(6px, -2px);
+    clip-path: inset(40% 0 32% 0);
+  }
+  94% {
+    transform: translate(-4px, 1px);
+    clip-path: inset(5% 0 78% 0);
+  }
+  97%,
+  100% {
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Draw-on diagram: strokes trace in, labels fade after                */
+/* (elements carry pathLength=1 so dasharray is unit-normalized)       */
+/* ------------------------------------------------------------------ */
+
+.diagram-draw :is(path, line, circle, rect, polyline) {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  fill: none;
+}
+.diagram-draw text {
+  opacity: 0;
+  stroke: none;
+}
+.diagram-draw.drawn :is(path, line, circle, rect, polyline) {
+  animation: draw-stroke 900ms ease-out forwards;
+  animation-delay: var(--draw-delay, 0ms);
+}
+.diagram-draw.drawn text {
+  animation: label-fade 450ms ease-out forwards;
+  animation-delay: var(--draw-delay, 900ms);
+}
+
+@keyframes draw-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes label-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Contact uplink: ping replies fade in after the typed command */
+.uplink-reply {
+  opacity: 0;
+  animation: label-fade 300ms ease-out forwards;
+  animation-delay: var(--delay, 1.2s);
+}
+
+/* ------------------------------------------------------------------ */
+/* View transitions: quick fade + 4px rise between pages               */
+/* ------------------------------------------------------------------ */
+
+::view-transition-old(.page-fade) {
+  animation: 140ms ease-out both vt-out;
+}
+::view-transition-new(.page-fade) {
+  animation: 200ms ease-in 60ms both vt-in;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: disable decorative animation globally               */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-letter,
+  .wordmark:hover .wordmark-letter {
+    animation: none;
+  }
+  /* Never leave content hidden or half-drawn when animation is off */
+  .reveal-pending {
+    opacity: 1;
+  }
+  .typed-cursor {
+    display: none;
+  }
+  /* Brand cursor still appears on hover, just steady instead of blinking */
+  .brand:hover .brand-cursor {
+    animation: none;
+  }
+  .brand-prompt,
+  .brand:hover .brand-prompt {
+    transition: none;
+    transform: none;
+  }
+  .uplink-reply {
+    opacity: 1;
+    animation: none;
+  }
+  .glitch::before,
+  .glitch::after {
+    animation: none;
+  }
+  .diagram-draw :is(path, line, circle, rect, polyline) {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .diagram-draw text {
+    opacity: 1;
+    animation: none;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

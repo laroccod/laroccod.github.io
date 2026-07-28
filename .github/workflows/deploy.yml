@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # The hero "commits on GitHub" stat is baked in at build time, so a weekly
+  # rebuild keeps it current without needing a push.
+  schedule:
+    - cron: "0 7 * * 1"
 
 permissions:
   contents: read
@@ -20,26 +24,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
-          cache: pip
+          node-version: "22"
+          cache: npm
 
-      # Pin Flutter to the 3.44 line matching the local toolchain flet 0.86
-      # was verified against; a floating channel could drift ahead of flet.
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.44.x"
-          channel: stable
-          cache: true
+      - run: npm ci
 
-      - run: pip install "flet[all]==0.86.0"
+      # src/data/github.ts counts commits via the GitHub API during the build.
+      # The automatic Actions token lifts the 60 req/hr unauthenticated limit
+      # that shared runner IPs would otherwise blow through; without it the
+      # stat silently falls back to its last known value.
+      - run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: flet build web --route-url-strategy hash --verbose
-
+      # next.config.ts sets output: "export", so the site lands in out/.
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: build/web
+          path: out
 
   deploy:
     needs: build

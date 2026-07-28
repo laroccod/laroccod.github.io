@@ -2,18 +2,32 @@
 # original photos). NEVER commit this directory — this repo is public.
 content/
 
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+.pnpm-debug.log*
+
 # macOS
 .DS_Store
 
-# Python
-__pycache__/
-*.pyc
-.venv/
-
-# Flet / Flutter build output (deployed via CI artifact, not committed)
-build/
-
-# Claude Code files (local tool state + working docs)
+# Claude Code files (local tool state + working docs); this repo is public
 .claude/
 CLAUDE.md
+AGENTS.md
 TASKLOG.md

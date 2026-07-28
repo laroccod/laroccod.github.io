@@ -14,10 +14,14 @@ export const metadata: Metadata = {
   ...ogMeta("contact"),
 };
 
-/** Decorative ping replies staged in after the typed command finishes. */
+/** Decorative ping replies staged in after the typed command finishes. The
+ * host is derived from EMAIL so the replies cannot drift away from the
+ * address actually being pinged. */
+const EMAIL_HOST = EMAIL.split("@")[1];
+
 const REPLY_LINES = [
-  "64 bytes from uci.edu: seq=0 time=0.42 ms",
-  "64 bytes from uci.edu: seq=1 time=0.38 ms",
+  `64 bytes from ${EMAIL_HOST}: seq=0 time=0.42 ms`,
+  `64 bytes from ${EMAIL_HOST}: seq=1 time=0.38 ms`,
   "-- link established: email is the fastest channel --",
 ];
 
